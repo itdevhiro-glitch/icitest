@@ -18,12 +18,13 @@
       <div class="hero-metrics"><span class="metric">Realtime Firebase</span><span class="metric">Team & Brawl</span><span class="metric">Mobile Ready</span></div>
     </section>
     <section class="auth-box">
-      <h2 class="auth-title">Welcome Back</h2>
+      <h2 class="auth-title">Login Account</h2>
+      <p class="auth-subtitle">Masuk sebagai admin, team, atau solo player.</p>
       <p id="auth-status-message" class="auth-message"></p>
       <form id="login-form" class="form-grid">
-        <input type="text" id="loginUsername" placeholder="Username / admin" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button type="submit" class="btn">Login</button>
+        <input type="text" id="loginUsername" placeholder="Username / admin" autocomplete="username" required>
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
+        <button type="submit" class="btn"><i class="ri-login-circle-line"></i> Login</button>
         <p>New team? <button id="to-register-btn" class="link-btn">Register here</button></p>
       </form>
       <form id="register-form" class="form-grid hidden">
@@ -33,7 +34,7 @@
         <input type="tel" id="regWhatsapp" placeholder="WhatsApp aktif, contoh 08123456789" required>
         <input type="email" id="regEmail" placeholder="Email @icikiwir.digital" required>
         <input type="password" id="regPassword" placeholder="Password minimal 6 karakter" required>
-        <button type="submit" class="btn success">Register Team</button>
+        <button type="submit" class="btn success"><i class="ri-user-add-line"></i> Register</button>
         <p>Have account? <button id="to-login-btn" class="link-btn">Login here</button></p>
       </form>
     </section>
