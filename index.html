@@ -3,39 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Icikiwir Esports Pro</title>
+  <title>Icikiwir Tourney</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body class="landing-page">
-  <main class="landing-shell">
-    <nav class="landing-nav">
-      <div class="logo-area"><div class="logo-icon"><i class="ri-gamepad-fill"></i></div><div class="brand-name">Icikiwir<span class="brand-sub">Esports Tournament System</span></div></div>
-      <a class="btn ghost" href="login.html"><i class="ri-login-box-line"></i> Login</a>
-    </nav>
-    <section class="landing-hero">
-      <div class="landing-copy">
-        <span class="badge">Team 5v5 • User Solo • 1v1 Brawl</span>
-        <h1>Manage tournament lebih rapi, aman, dan gampang koordinasi.</h1>
-        <p>Sistem bracket realtime, validasi roster, kontak WhatsApp tiap participant, leaderboard, dan dashboard admin untuk mengatur tournament tanpa bentrok data.</p>
-        <div class="landing-actions">
-          <a class="btn" href="login.html"><i class="ri-rocket-line"></i> Masuk Dashboard</a>
-          <a class="btn ghost" href="login.html#register"><i class="ri-user-add-line"></i> Register</a>
+<body class="landing-page landing-simple-page">
+  <main class="welcome-shell">
+    <section class="welcome-card">
+      <div class="welcome-brand">
+        <span class="brand-icon"><i class="ri-gamepad-fill"></i></span>
+        <div>
+          <strong>Icikiwir Tourney</strong>
+          <small>Esports Tournament Website</small>
         </div>
       </div>
-      <div class="landing-panel card">
-        <div class="section-title"><i class="ri-shield-check-line"></i> System Highlights</div>
-        <div class="feature-list">
-          <article><i class="ri-team-line"></i><div><b>Team login</b><small>Join Team 5v5 dengan lineup sesuai batas admin.</small></div></article>
-          <article><i class="ri-user-star-line"></i><div><b>User login</b><small>User biasa hanya bisa join 1 vs 1 Brawl, bukan Team 5v5.</small></div></article>
-          <article><i class="ri-whatsapp-line"></i><div><b>Copy WhatsApp</b><small>Nomor lawan bisa dicopy dari participant dan bracket.</small></div></article>
-          <article><i class="ri-git-branch-line"></i><div><b>Safe bracket</b><small>Bracket dikunci setelah validasi slot, payment, dan roster.</small></div></article>
-        </div>
+
+      <div class="welcome-copy">
+        <p class="eyebrow">Welcome</p>
+        <h1>Selamat datang di Icikiwir Tourney.</h1>
+        <p>Platform sederhana untuk daftar tournament, cek bracket, koordinasi lawan, dan mengelola team dengan lebih rapi.</p>
       </div>
+
+      <a class="btn welcome-btn" href="login.html">
+        Lanjut ke Login <i class="ri-arrow-right-line"></i>
+      </a>
     </section>
   </main>
-  <script>
-    if (location.hash === '#register') sessionStorage.setItem('openRegister','1');
-  </script>
 </body>
 </html>
