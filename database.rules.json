@@ -7,6 +7,12 @@
         ".write": "auth != null && (data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')"
       }
     },
+    "users": {
+      "$userId": {
+        ".read": "auth != null",
+        ".write": "auth != null && (data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')"
+      }
+    },
     "tournaments": {
       ".read": "auth != null",
       "$tournamentId": {

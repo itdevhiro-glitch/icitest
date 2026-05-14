@@ -49,7 +49,16 @@ export function getRoundKeys(bracket = {}) {
 }
 
 export function modeLabel(mode = 'team') {
-  return mode === 'brawl' ? '1 VS 1 BRAWL' : 'TEAM TOURNAMENT';
+  if (mode === 'brawl') return '1 VS 1 BRAWL';
+  if (mode === 'solo') return 'USER SOLO';
+  return 'TEAM 5V5';
+}
+
+export function normalizeWhatsApp(value = '') {
+  let v = String(value).replace(/\D/g, '');
+  if (v.startsWith('0')) v = '62' + v.slice(1);
+  if (v && !v.startsWith('62')) v = '62' + v;
+  return v;
 }
 
 export function roleClass(role = '') {

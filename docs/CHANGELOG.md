@@ -9,3 +9,13 @@
 - Rebuilt mobile-first responsive UI.
 - Added toast notification helper.
 - Added safer HTML escaping helper.
+
+## Pro v2 - Login Team/User + Safe Tournament Flow
+- Login sekarang mencari akun di `teams` dan `users`, bukan team saja.
+- Register punya tipe akun: Team atau User/Solo Player.
+- Akun user tidak melihat tournament Team 5v5.
+- Team 5v5 wajib memilih lineup player ketika daftar.
+- Admin bisa menentukan `playerPerTeam` per tournament dan `maxRoster` tiap team.
+- Participant menyimpan WhatsApp untuk kontak cepat via Admin Panel.
+- Bracket generation melakukan validasi approved payment, slot, duplicate, dan jumlah player sebelum start.
+- UI/UX diperhalus dengan wallpaper Clint Soul Vessels, navbar lebih jelas, checkbox lineup, dan bracket visual lebih rapi.

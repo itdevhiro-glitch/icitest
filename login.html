@@ -27,8 +27,10 @@
         <p>New team? <button id="to-register-btn" class="link-btn">Register here</button></p>
       </form>
       <form id="register-form" class="form-grid hidden">
+        <select id="regAccountType" required><option value="team">Register sebagai Team</option><option value="user">Register sebagai User / Solo Player</option></select>
         <input type="text" id="regUsername" placeholder="Username tanpa spasi" required>
-        <input type="text" id="regTeamName" placeholder="Team Name" required>
+        <input type="text" id="regTeamName" placeholder="Team Name / Nama Player" required>
+        <input type="tel" id="regWhatsapp" placeholder="WhatsApp aktif, contoh 08123456789" required>
         <input type="email" id="regEmail" placeholder="Email @icikiwir.digital" required>
         <input type="password" id="regPassword" placeholder="Password minimal 6 karakter" required>
         <button type="submit" class="btn success">Register Team</button>

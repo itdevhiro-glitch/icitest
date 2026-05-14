@@ -20,8 +20,9 @@
           <div class="section-title"><i class="ri-add-circle-line"></i> Create Tournament</div>
           <form id="create-tournament-form" class="form-grid">
             <input id="tourName" placeholder="Tournament Name" required>
-            <div class="form-row"><select id="tourMode"><option value="team">Team Tournament</option><option value="brawl">1 vs 1 Brawl</option></select><select id="tourFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></div>
-            <div class="form-row"><input id="tourMax" type="number" min="2" placeholder="Max Slots" required><input id="tourDate" type="date" required></div>
+            <div class="form-row"><select id="tourMode"><option value="team">Team 5v5</option><option value="brawl">1 vs 1 Brawl</option><option value="solo">User Solo</option></select><select id="tourFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></div>
+            <div class="form-row"><input id="tourMax" type="number" min="2" placeholder="Max Slots" required><input id="tourPlayerPerTeam" type="number" min="1" max="10" value="5" placeholder="Player per Team"></div>
+            <input id="tourDate" type="date" required>
             <div class="form-row"><input id="tourFee" type="number" min="0" placeholder="Fee 0 = Free" required><input id="tourPrize" type="number" min="0" placeholder="Total Prize Pool" required></div>
             <textarea id="tourRules" rows="5" placeholder="Tournament rules..." required></textarea>
             <button class="btn" type="submit">Create Tournament</button>
@@ -29,7 +30,7 @@
         </div>
         <div class="card"><div class="section-title"><i class="ri-list-check"></i> Tournament List</div><div id="tournament-list-container" class="roster-list"><div class="empty-state">Loading...</div></div></div>
       </section>
-      <section id="admin-teams-section" class="card hidden"><div class="section-title"><i class="ri-shield-star-line"></i> Team Stats Manager</div><div id="team-stats-list" class="teams-grid"></div></section>
+      <section id="admin-teams-section" class="card hidden"><div class="section-title"><i class="ri-shield-star-line"></i> Team Manager</div><div id="team-stats-list" class="teams-grid"></div></section>
       <section id="tournament-control-section" class="card hidden">
         <button class="btn ghost small" onclick="showSection('dashboard')"><i class="ri-arrow-left-line"></i> Back</button>
         <div class="bracket-heading"><div><h2 id="control-title">Control</h2><span id="format-display"></span><p id="fee-display"></p></div></div>
