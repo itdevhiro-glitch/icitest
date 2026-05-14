@@ -16,8 +16,8 @@
 
     <section class="cinematic-auth-panel" aria-label="Authentication form">
       <div class="cinematic-auth-title">
-        <h1 id="auth-card-title">WELCOME BACK</h1>
-        <p id="auth-card-subtitle">Please login to continue</p>
+        <h1 id="auth-card-title">Siap tanding?</h1>
+        <p id="auth-card-subtitle">Masuk dulu, lanjut ke lobby.</p>
       </div>
 
       <p id="auth-status-message" class="auth-message cinematic-message"></p>
@@ -25,19 +25,19 @@
       <form id="login-form" class="cinematic-form">
         <label class="cinematic-field">
           <i class="ri-mail-line"></i>
-          <input type="text" id="loginUsername" placeholder="Enter your email / username" autocomplete="username" required>
+          <input type="text" id="loginUsername" placeholder="Email atau username" autocomplete="username" required>
         </label>
 
         <label class="cinematic-field">
           <i class="ri-lock-2-fill"></i>
-          <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
           <button type="button" class="cinematic-eye-btn" id="toggle-password" aria-label="Show password"><i class="ri-eye-fill"></i></button>
         </label>
 
-        <button type="submit" class="cinematic-submit-btn">LOGIN</button>
-        <button type="button" class="cinematic-link-btn auth-forgot">Forgot Password?</button>
+        <button type="submit" class="cinematic-submit-btn">Masuk</button>
+        <button type="button" class="cinematic-link-btn auth-forgot">Lupa password?</button>
 
-        <p class="cinematic-switch">Don't have an account? <button id="to-register-btn" class="cinematic-link-btn cinematic-accent">SIGN UP</button></p>
+        <p class="cinematic-switch">Belum punya akun? <button id="to-register-btn" class="cinematic-link-btn cinematic-accent">Daftar</button></p>
       </form>
 
       <form id="register-form" class="cinematic-form hidden">
@@ -55,8 +55,8 @@
         <label class="cinematic-field"><i class="ri-mail-line"></i><input type="email" id="regEmail" placeholder="Email" required></label>
         <label class="cinematic-field"><i class="ri-lock-password-line"></i><input type="password" id="regPassword" placeholder="Password" required></label>
 
-        <button type="submit" class="cinematic-submit-btn">CREATE ACCOUNT</button>
-        <p class="cinematic-switch">Already have an account? <button id="to-login-btn" class="cinematic-link-btn cinematic-accent">LOGIN</button></p>
+        <button type="submit" class="cinematic-submit-btn">Buat akun</button>
+        <p class="cinematic-switch">Sudah punya akun? <button id="to-login-btn" class="cinematic-link-btn cinematic-accent">Masuk</button></p>
       </form>
     </section>
   </main>
@@ -78,12 +78,12 @@
     const title = document.getElementById('auth-card-title');
     const subtitle = document.getElementById('auth-card-subtitle');
     document.getElementById('to-register-btn')?.addEventListener('click', () => {
-      title.textContent = 'CREATE ACCOUNT';
-      subtitle.textContent = 'Sign up and start competing';
+      title.textContent = 'Bikin akun';
+      subtitle.textContent = 'Isi data singkat, langsung masuk lobby.';
     });
     document.getElementById('to-login-btn')?.addEventListener('click', () => {
-      title.textContent = 'WELCOME BACK';
-      subtitle.textContent = 'Please login to continue';
+      title.textContent = 'Siap tanding?';
+      subtitle.textContent = 'Masuk dulu, lanjut ke lobby.';
     });
   </script>
 </body>

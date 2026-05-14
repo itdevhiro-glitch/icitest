@@ -1552,3 +1552,235 @@ body.cinematic-index-page::after{
   .cinematic-submit-btn{min-height:54px;border-radius:7px;}
   .cinematic-switch{font-size:.9rem;}
 }
+
+/* =========================================================
+   V13 — Natural copy + better cinematic positioning
+   ========================================================= */
+body.cinematic-auth-page,
+body.cinematic-index-page{
+  background-position:center center!important;
+}
+body.cinematic-auth-page::before{
+  background:
+    radial-gradient(circle at 18% 58%, rgba(37,99,235,.20), transparent 32%),
+    linear-gradient(90deg, rgba(2,6,23,.78) 0%, rgba(2,6,23,.50) 27%, rgba(2,6,23,.18) 58%, rgba(2,6,23,.32) 100%),
+    linear-gradient(180deg, rgba(2,6,23,.10), rgba(2,6,23,.58));
+}
+.cinematic-auth-shell{
+  justify-content:flex-end;
+  padding-bottom:clamp(64px,10vh,118px);
+}
+.cinematic-auth-panel{
+  width:min(405px,100%);
+  margin-left:clamp(6px,3.2vw,54px);
+  padding-top:0;
+}
+.cinematic-auth-title{margin-bottom:16px;}
+.cinematic-auth-title h1{
+  font-size:clamp(2.15rem,3.65vw,3.1rem);
+  letter-spacing:-.055em;
+  text-transform:none;
+}
+.cinematic-auth-title p{
+  margin-top:7px;
+  font-size:1rem;
+  color:rgba(255,255,255,.82);
+}
+.cinematic-form{gap:12px;}
+.cinematic-field{
+  min-height:52px;
+  border-radius:10px;
+  border-color:rgba(255,255,255,.58);
+  background:rgba(255,255,255,.90)!important;
+  box-shadow:0 15px 32px rgba(2,8,23,.22), inset 0 1px 0 rgba(255,255,255,.95);
+}
+.cinematic-submit-btn,
+.cinematic-cta{
+  border-radius:10px;
+  background:linear-gradient(180deg,#2563ff 0%,#1452f8 100%);
+}
+.cinematic-submit-btn{
+  min-height:56px;
+  text-transform:none;
+  letter-spacing:.01em;
+}
+.auth-forgot{justify-self:center;margin-top:0;}
+.cinematic-switch{margin-top:12px!important;}
+.cinematic-index-shell{
+  padding-bottom:clamp(72px,12vh,132px);
+}
+.cinematic-hero-clean{
+  align-self:end;
+  margin-left:clamp(6px,3.2vw,54px);
+  margin-bottom:0;
+  width:min(590px,100%);
+}
+.cinematic-hero-clean p{
+  text-transform:none;
+  letter-spacing:.02em;
+  font-size:.98rem;
+  font-weight:750;
+  color:rgba(255,255,255,.78);
+}
+.cinematic-hero-clean h1{
+  font-size:clamp(3.25rem,7.2vw,6.65rem);
+  letter-spacing:-.078em;
+}
+.cinematic-cta{
+  min-height:52px;
+  padding:0 22px;
+}
+@media(max-width:860px){
+  body.cinematic-auth-page,
+  body.cinematic-index-page{
+    background-position:58% top!important;
+  }
+  body.cinematic-auth-page::before{
+    background:
+      linear-gradient(90deg, rgba(2,6,23,.76), rgba(2,6,23,.36)),
+      linear-gradient(180deg, rgba(2,6,23,.08) 0%, rgba(2,6,23,.42) 48%, rgba(2,6,23,.82) 100%);
+  }
+  body.cinematic-index-page::before{
+    background:
+      linear-gradient(90deg, rgba(2,6,23,.72), rgba(2,6,23,.30)),
+      linear-gradient(180deg, rgba(2,6,23,.10) 0%, rgba(2,6,23,.50) 56%, rgba(2,6,23,.86) 100%);
+  }
+  .cinematic-auth-shell{
+    min-height:100svh;
+    justify-content:flex-end;
+    padding:28px 22px 34px;
+  }
+  .cinematic-auth-panel{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding-top:84px;
+  }
+  .cinematic-auth-title h1{font-size:clamp(2.25rem,10vw,3rem);}
+  .cinematic-auth-title p{font-size:.98rem;}
+  .cinematic-index-shell{padding:26px 22px 40px;}
+  .cinematic-hero-clean{
+    align-self:end;
+    margin:0 auto;
+    width:100%;
+    max-width:460px;
+  }
+  .cinematic-hero-clean h1{font-size:clamp(3rem,13vw,4.55rem);}
+}
+@media(max-width:480px){
+  .cinematic-brand span{font-size:.86rem;}
+  .cinematic-brand small{font-size:.56rem;}
+  .cinematic-nav-login{min-height:38px;padding:0 15px;font-size:.9rem;}
+  .cinematic-auth-shell{padding-inline:18px;padding-bottom:28px;}
+  .cinematic-auth-panel{max-width:100%;}
+  .cinematic-field{border-radius:10px;}
+  .cinematic-submit-btn{border-radius:10px;}
+  .cinematic-switch{line-height:1.45;}
+}
+
+/* =========================================================
+   V14 — Centered cinematic layout fix
+   ========================================================= */
+body.cinematic-auth-page,
+body.cinematic-index-page{
+  overflow:auto!important;
+  background-position:center center!important;
+}
+
+.cinematic-auth-shell{
+  min-height:100svh!important;
+  padding:clamp(72px,8vh,96px) clamp(18px,5vw,80px) clamp(28px,5vh,56px)!important;
+  display:grid!important;
+  place-items:center!important;
+  justify-content:normal!important;
+  align-items:center!important;
+}
+
+.cinematic-brand{
+  top:clamp(20px,3vw,34px)!important;
+  left:clamp(20px,5vw,80px)!important;
+}
+
+.cinematic-auth-panel{
+  width:min(430px,92vw)!important;
+  margin:0 auto!important;
+  padding-top:0!important;
+  transform:none!important;
+}
+
+.cinematic-auth-title{
+  text-align:left!important;
+}
+
+.cinematic-index-shell{
+  min-height:100svh!important;
+  padding:clamp(24px,4vw,42px) clamp(18px,5vw,80px)!important;
+  display:grid!important;
+  grid-template-rows:auto 1fr!important;
+}
+
+.cinematic-hero-clean{
+  place-self:center!important;
+  align-self:center!important;
+  justify-self:center!important;
+  margin:0 auto!important;
+  width:min(620px,92vw)!important;
+  text-align:center!important;
+}
+
+.cinematic-hero-clean h1,
+.cinematic-hero-clean p{
+  text-align:center!important;
+}
+
+@media(max-width:860px){
+  body.cinematic-auth-page,
+  body.cinematic-index-page{
+    background-position:center top!important;
+  }
+  body.cinematic-auth-page::before{
+    background:
+      linear-gradient(90deg, rgba(2,6,23,.76), rgba(2,6,23,.40)),
+      linear-gradient(180deg, rgba(2,6,23,.16) 0%, rgba(2,6,23,.44) 48%, rgba(2,6,23,.82) 100%)!important;
+  }
+  .cinematic-auth-shell{
+    padding:82px 18px 28px!important;
+    place-items:center!important;
+  }
+  .cinematic-brand{
+    left:18px!important;
+    top:22px!important;
+  }
+  .cinematic-auth-panel{
+    width:min(430px,100%)!important;
+    max-width:430px!important;
+    margin:auto!important;
+    padding-top:0!important;
+  }
+  .cinematic-auth-title{
+    text-align:center!important;
+  }
+  .cinematic-index-shell{
+    padding:24px 18px 34px!important;
+  }
+  .cinematic-hero-clean{
+    width:min(460px,100%)!important;
+    margin:auto!important;
+    place-self:center!important;
+  }
+}
+
+@media(max-width:480px){
+  .cinematic-auth-shell{
+    padding:76px 16px 24px!important;
+  }
+  .cinematic-auth-panel{
+    width:100%!important;
+  }
+  .cinematic-auth-title h1{
+    font-size:clamp(2.05rem,10vw,2.65rem)!important;
+  }
+  .cinematic-auth-title p{
+    font-size:.95rem!important;
+  }
+}
