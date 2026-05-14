@@ -1784,3 +1784,85 @@ body.cinematic-index-page{
     font-size:.95rem!important;
   }
 }
+
+/* =========================================================
+   V15 FIX - Solo desktop roster + logical separated leaderboard
+   ========================================================= */
+@media (min-width: 981px){
+  .solo-roster-card{
+    display:grid!important;
+    grid-template-columns:58px minmax(0,1fr) minmax(260px,auto)!important;
+    align-items:center!important;
+    gap:16px!important;
+    padding:16px!important;
+    overflow:hidden!important;
+  }
+  .solo-roster-avatar{
+    width:58px;height:58px;border-radius:18px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,rgba(249,115,22,.22),rgba(239,68,68,.16));
+    border:1px solid rgba(251,146,60,.24);
+    color:#fed7aa;font-size:1.55rem;
+    flex:0 0 auto;
+  }
+  .solo-roster-main{min-width:0!important;gap:6px!important;}
+  .solo-roster-main strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .solo-roster-actions{
+    justify-self:end!important;
+    width:auto!important;
+    min-width:250px!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+  }
+  .solo-roster-actions .btn{
+    width:100%!important;
+    min-height:40px!important;
+    padding:9px 12px!important;
+    white-space:nowrap!important;
+    font-size:.76rem!important;
+  }
+}
+.solo-only-note{text-align:left!important;line-height:1.6!important;}
+.leaderboard-card{overflow:hidden!important;}
+.leaderboard-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px;
+}
+.leaderboard-copy{margin:0;color:#aebbd0;line-height:1.65;max-width:680px;}
+.leaderboard-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;
+  padding:6px;border-radius:18px;background:rgba(2,6,23,.34);border:1px solid rgba(255,255,255,.09);
+}
+.leaderboard-tab{
+  min-height:42px;border:0;border-radius:13px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;
+  background:transparent;color:#aebbd0;font-weight:900;cursor:pointer;white-space:nowrap;
+}
+.leaderboard-tab.active{
+  color:#fff;background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(99,102,241,.20));
+  box-shadow:0 12px 28px rgba(37,99,235,.16);
+}
+.leaderboard-summary{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px;
+}
+.leaderboard-summary article{
+  padding:14px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);
+}
+.leaderboard-summary small{display:block;color:#94a3b8;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
+.leaderboard-summary b{display:block;color:#f8fbff;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.leaderboard-table tr.rank-1{background:linear-gradient(90deg,rgba(250,204,21,.10),transparent 70%);}
+.leaderboard-table tr.rank-2{background:linear-gradient(90deg,rgba(203,213,225,.08),transparent 70%);}
+.leaderboard-table tr.rank-3{background:linear-gradient(90deg,rgba(253,186,116,.08),transparent 70%);}
+@media (max-width: 980px){
+  .leaderboard-head{display:grid;gap:14px;}
+  .leaderboard-tabs{justify-content:stretch;}
+  .leaderboard-tab{flex:1;justify-content:center;}
+  .leaderboard-summary{grid-template-columns:1fr 1fr;}
+  .solo-roster-card{gap:12px!important;}
+  .solo-roster-actions{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;}
+  .solo-roster-actions .btn{width:100%!important;}
+}
+@media (max-width: 560px){
+  .leaderboard-summary{grid-template-columns:1fr;}
+  .leaderboard-tabs{display:grid;grid-template-columns:1fr;}
+  .solo-roster-actions{grid-template-columns:1fr!important;}
+}

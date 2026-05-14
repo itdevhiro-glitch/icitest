@@ -7,6 +7,9 @@ let currentData = null;
 let currentType = 'team';
 let activeBracketId = null;
 let pendingRegistration = null;
+let leaderboardTeams = {};
+let leaderboardUsers = {};
+let leaderboardMode = 'team';
 const refs = [];
 
 const sections = { dashboard: $('#dashboard-section'), leaderboard: $('#leaderboard-section'), bracket: $('#bracket-section'), profile: $('#profile-section') };
@@ -58,7 +61,8 @@ function initDashboard() {
   const accountPath = currentType === 'team' ? `teams/${currentKey}` : `users/${currentKey}`;
   listen(accountPath, snap => { currentData = snap.val(); renderDashboard(); renderProfileForm(); });
   listen('tournaments', snap => { const t = snap.val() || {}; renderTournaments(t); renderBracketView(t); });
-  listen('teams', snap => renderLeaderboard(snap.val() || {}));
+  listen('teams', snap => { leaderboardTeams = snap.val() || {}; renderLeaderboard(); });
+  listen('users', snap => { leaderboardUsers = snap.val() || {}; renderLeaderboard(); });
 }
 
 function renderDashboard() {
@@ -69,7 +73,7 @@ function renderDashboard() {
 
   if (currentType === 'user') {
     $('#roster-count').textContent = 'Solo';
-    $('#roster-list').innerHTML = `<article class="player-card"><span class="role-badge role-sub">USER</span><div class="player-main"><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state">Akun user hanya bisa ikut tournament 1 vs 1 Brawl. Mode Team 5v5 sengaja disembunyikan.</div>`;
+    $('#roster-list').innerHTML = `<article class="player-card solo-roster-card"><div class="solo-roster-avatar"><i class="ri-user-star-line"></i></div><div class="player-main solo-roster-main"><span class="role-badge role-sub">SOLO PLAYER</span><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions solo-roster-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state solo-only-note">Akun user hanya bisa ikut tournament 1 vs 1 Brawl. Mode Team 5v5 sengaja disembunyikan agar alurnya tidak rancu.</div>`;
     $('#add-player-form').classList.add('hidden');
     return;
   }
@@ -220,4 +224,55 @@ $('#profile-form')?.addEventListener('submit', async event => {
   }
 });
 
-function renderLeaderboard(teams) { const tbody = $('#leaderboard-body'); const rows = Object.values(teams).map(t => { const s = t.stats || {}; const free = (s.ch1||0)*5+(s.ch2||0)*3+(s.ch3||0); const paid=(s.paidCh1||0)*7+(s.paidCh2||0)*4+(s.paidCh3||0)*2; const brawl=(s.brawlCh1||0)*4+(s.brawlCh2||0)*2+(s.brawlCh3||0); return { name:t.teamName, username:t.username, free, paid, brawl, total: free+paid+brawl }; }).sort((a,b)=>b.total-a.total); tbody.innerHTML = rows.map((r,i)=>`<tr><td>#${i+1}</td><td><strong>${escapeHtml(r.name)}</strong><small>${escapeHtml(r.username)}</small></td><td>${r.free}</td><td>${r.paid}</td><td>${r.brawl}</td><td><b>${r.total}</b></td></tr>`).join('') || '<tr><td colspan="6">No leaderboard data.</td></tr>'; }
+window.switchLeaderboard = function(mode) {
+  leaderboardMode = mode === 'solo' ? 'solo' : 'team';
+  $$('.leaderboard-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.board === leaderboardMode));
+  renderLeaderboard();
+};
+
+function scoreSet(stats = {}, keys = [], weights = []) {
+  return keys.reduce((total, key, index) => total + Number(stats[key] || 0) * Number(weights[index] || 0), 0);
+}
+function medalTotal(stats = {}, keys = []) {
+  return keys.reduce((total, key) => total + Number(stats[key] || 0), 0);
+}
+function renderLeaderboardSummary(rows, mode) {
+  const totalPlayers = rows.length;
+  const topName = rows[0]?.name || '-';
+  const totalPoints = rows.reduce((sum, row) => sum + row.total, 0);
+  $('#leaderboard-summary').innerHTML = `
+    <article><small>Kategori</small><b>${mode === 'solo' ? 'Solo 1v1 Brawl' : 'Team 5v5'}</b></article>
+    <article><small>Peserta terhitung</small><b>${totalPlayers}</b></article>
+    <article><small>Top sementara</small><b>${escapeHtml(topName)}</b></article>
+    <article><small>Total poin</small><b>${totalPoints}</b></article>`;
+}
+function rankClass(index) { return index < 3 ? `rank-${index + 1}` : ''; }
+function renderLeaderboard() {
+  const head = $('#leaderboard-head-row');
+  const tbody = $('#leaderboard-body');
+  if (!head || !tbody) return;
+
+  if (leaderboardMode === 'solo') {
+    const rows = Object.values(leaderboardUsers).map(user => {
+      const s = user.stats || {};
+      const champion = Number(s.brawlCh1 || 0), runnerUp = Number(s.brawlCh2 || 0), third = Number(s.brawlCh3 || 0);
+      const total = scoreSet(s, ['brawlCh1', 'brawlCh2', 'brawlCh3'], [4, 2, 1]);
+      return { name: user.displayName || user.username || 'Solo Player', username: user.username || '-', champion, runnerUp, third, medals: medalTotal(s, ['brawlCh1', 'brawlCh2', 'brawlCh3']), total };
+    }).filter(row => row.total > 0 || row.medals > 0).sort((a, b) => b.total - a.total || b.champion - a.champion || a.name.localeCompare(b.name));
+    head.innerHTML = '<tr><th>Rank</th><th>Solo Player</th><th>Juara 1</th><th>Juara 2</th><th>Juara 3</th><th>Total</th></tr>';
+    renderLeaderboardSummary(rows, 'solo');
+    tbody.innerHTML = rows.map((r, i) => `<tr class="${rankClass(i)}"><td>#${i + 1}</td><td><strong>${escapeHtml(r.name)}</strong><small>@${escapeHtml(r.username)}</small></td><td>${r.champion}</td><td>${r.runnerUp}</td><td>${r.third}</td><td><b>${r.total}</b></td></tr>`).join('') || '<tr><td colspan="6">Belum ada data Solo Brawl. Poin akan muncul setelah admin input hasil juara.</td></tr>';
+    return;
+  }
+
+  const rows = Object.values(leaderboardTeams).map(team => {
+    const s = team.stats || {};
+    const free = scoreSet(s, ['ch1', 'ch2', 'ch3'], [5, 3, 1]);
+    const paid = scoreSet(s, ['paidCh1', 'paidCh2', 'paidCh3'], [7, 4, 2]);
+    const total = free + paid;
+    return { name: team.teamName || team.username || 'Team', username: team.username || '-', free, paid, champion: Number(s.ch1 || 0) + Number(s.paidCh1 || 0), total };
+  }).filter(row => row.total > 0 || row.champion > 0).sort((a, b) => b.total - a.total || b.champion - a.champion || a.name.localeCompare(b.name));
+  head.innerHTML = '<tr><th>Rank</th><th>Team</th><th>Free 5v5</th><th>Paid 5v5</th><th>Juara 1</th><th>Total</th></tr>';
+  renderLeaderboardSummary(rows, 'team');
+  tbody.innerHTML = rows.map((r, i) => `<tr class="${rankClass(i)}"><td>#${i + 1}</td><td><strong>${escapeHtml(r.name)}</strong><small>@${escapeHtml(r.username)}</small></td><td>${r.free}</td><td>${r.paid}</td><td>${r.champion}</td><td><b>${r.total}</b></td></tr>`).join('') || '<tr><td colspan="6">Belum ada data Team 5v5. Poin brawl tidak dicampur ke leaderboard team.</td></tr>';
+}
