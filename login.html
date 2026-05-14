@@ -7,10 +7,10 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body class="auth-page auth-clean-page">
-  <main class="auth-clean-shell">
-    <section class="auth-clean-panel">
-      <div class="auth-clean-brand">
+<body class="auth-page auth-clean-page ui-refresh">
+  <main class="auth-clean-shell v9-auth-shell">
+    <section class="auth-clean-panel v9-auth-panel">
+      <div class="auth-clean-brand v9-brand-chip">
         <span class="brand-icon"><i class="ri-gamepad-fill"></i></span>
         <div>
           <strong>Icikiwir Esports</strong>
@@ -20,31 +20,31 @@
 
       <div class="auth-clean-copy">
         <p class="eyebrow">Secure Access</p>
-        <h1>WELCOME BACK</h1>
-        <p>Please login to continue</p>
+        <h1>Welcome Back</h1>
+        <p>Login untuk lanjut ke dashboard tournament.</p>
       </div>
 
       <p id="auth-status-message" class="auth-message"></p>
 
-      <form id="login-form" class="auth-clean-form">
+      <form id="login-form" class="auth-clean-form v9-form-card">
         <label class="input-wrap">
-          <i class="ri-mail-line"></i>
-          <input type="text" id="loginUsername" placeholder="Enter your username / admin" autocomplete="username" required>
+          <i class="ri-user-3-line"></i>
+          <input type="text" id="loginUsername" placeholder="Username / admin" autocomplete="username" required>
         </label>
         <label class="input-wrap">
-          <i class="ri-lock-2-fill"></i>
-          <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+          <i class="ri-lock-2-line"></i>
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
           <button type="button" class="field-icon" id="toggle-password" aria-label="Show password"><i class="ri-eye-line"></i></button>
         </label>
-        <button type="submit" class="btn auth-main-btn">LOGIN</button>
+        <button type="submit" class="btn auth-main-btn">Login</button>
         <button type="button" class="link-btn auth-forgot">Forgot Password?</button>
-        <p class="auth-switch">Don't have an account? <button id="to-register-btn" class="link-btn">SIGN UP</button></p>
+        <p class="auth-switch">Belum punya akun? <button id="to-register-btn" class="link-btn">Daftar sekarang</button></p>
       </form>
 
-      <form id="register-form" class="auth-clean-form hidden">
+      <form id="register-form" class="auth-clean-form v9-form-card hidden">
         <div class="register-title">
           <h2>Create Account</h2>
-          <p>Daftar sebagai Team atau Solo Player.</p>
+          <p>Pilih Team untuk 5v5 atau User untuk 1v1 Brawl.</p>
         </div>
         <label class="input-wrap select-wrap">
           <i class="ri-user-settings-line"></i>
@@ -55,8 +55,8 @@
         <label class="input-wrap"><i class="ri-whatsapp-line"></i><input type="tel" id="regWhatsapp" placeholder="WhatsApp aktif, contoh 08123456789" required></label>
         <label class="input-wrap"><i class="ri-mail-line"></i><input type="email" id="regEmail" placeholder="Email @icikiwir.digital" required></label>
         <label class="input-wrap"><i class="ri-lock-password-line"></i><input type="password" id="regPassword" placeholder="Password minimal 6 karakter" required></label>
-        <button type="submit" class="btn auth-main-btn success">REGISTER</button>
-        <p class="auth-switch">Have account? <button id="to-login-btn" class="link-btn">LOGIN HERE</button></p>
+        <button type="submit" class="btn auth-main-btn success">Register</button>
+        <p class="auth-switch">Sudah punya akun? <button id="to-login-btn" class="link-btn">Login di sini</button></p>
       </form>
     </section>
   </main>

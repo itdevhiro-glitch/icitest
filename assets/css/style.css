@@ -835,3 +835,127 @@ body.landing-simple-page::before{
   .auth-main-btn{height:52px!important;min-height:52px!important;}
   .welcome-card{max-width:100%!important;padding:24px 20px!important;border-radius:24px!important;}
 }
+
+/* =========================================================
+   UI/UX REFRESH v9 - clean modern index, login, dashboard nav
+   ========================================================= */
+:root{
+  --v9-bg:#020617;
+  --v9-panel:rgba(8,13,26,.72);
+  --v9-panel-strong:rgba(8,13,26,.88);
+  --v9-line:rgba(255,255,255,.12);
+  --v9-text:#f8fafc;
+  --v9-muted:#aebbd0;
+  --v9-blue:#38bdf8;
+  --v9-indigo:#6366f1;
+  --v9-radius:24px;
+}
+*{box-sizing:border-box}
+body.ui-refresh,
+body:not(.auth-page):not(.landing-page){
+  color:var(--v9-text);
+  background:#020617 var(--main-bg-image) center/cover no-repeat fixed!important;
+}
+body.ui-refresh::before,
+body:not(.auth-page):not(.landing-page)::before{
+  z-index:-1!important;
+  background:
+    linear-gradient(90deg,rgba(2,6,23,.92),rgba(2,6,23,.68) 38%,rgba(2,6,23,.78)),
+    linear-gradient(180deg,rgba(2,6,23,.18),rgba(2,6,23,.86)),
+    radial-gradient(circle at 18% 16%,rgba(56,189,248,.20),transparent 31%),
+    radial-gradient(circle at 82% 12%,rgba(99,102,241,.20),transparent 30%)!important;
+}
+.btn{
+  border-radius:14px!important;
+  min-height:42px;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid rgba(255,255,255,.08)!important;
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease;
+}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.04)}
+.card,.modal-content,.hero-banner,.sidebar{
+  border:1px solid var(--v9-line)!important;
+  background:linear-gradient(180deg,rgba(8,13,26,.78),rgba(8,13,26,.62))!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05)!important;
+  backdrop-filter:blur(18px) saturate(125%);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+}
+input,select,textarea{
+  min-height:46px;
+  border-radius:14px!important;
+  color:#f8fafc!important;
+  background:rgba(2,6,23,.62)!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  outline:none!important;
+}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 4px rgba(56,189,248,.14);border-color:rgba(125,211,252,.42)!important}
+
+/* Index */
+body.landing-simple-page.ui-refresh{overflow:auto!important;min-height:100svh!important;background-position:center!important}
+.v9-welcome-shell{min-height:100svh;display:grid;place-items:center;padding:clamp(18px,4vw,44px)!important}
+.v9-welcome-card{
+  width:min(680px,100%);
+  padding:clamp(26px,5vw,46px)!important;
+  border-radius:32px!important;
+  text-align:left!important;
+  background:linear-gradient(180deg,rgba(2,6,23,.74),rgba(2,6,23,.52))!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  box-shadow:0 34px 110px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.v9-brand-chip{display:inline-flex!important;align-items:center;gap:12px;width:max-content;max-width:100%;margin-bottom:28px!important;text-align:left!important}
+.brand-icon,.logo-icon{width:44px!important;height:44px!important;border-radius:15px!important;display:grid!important;place-items:center!important;background:linear-gradient(135deg,#38bdf8,#6366f1)!important;color:white!important;box-shadow:0 14px 32px rgba(56,189,248,.24)}
+.welcome-copy .eyebrow,.auth-clean-copy .eyebrow{width:max-content;margin-bottom:12px!important}
+.v9-welcome-card .welcome-copy h1{font-size:clamp(2.15rem,5vw,4.1rem)!important;line-height:.96!important;letter-spacing:-.065em!important;margin:0 0 16px!important;max-width:620px!important}
+.v9-welcome-card .welcome-copy p:not(.eyebrow){max-width:590px!important;margin:0!important;color:#dbeafe!important;font-size:1.02rem!important;line-height:1.75!important}
+.v9-welcome-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.v9-welcome-actions .welcome-btn{margin:0!important;padding:0 22px!important;min-height:52px!important;background:linear-gradient(135deg,#2563eb,#0ea5e9)!important;box-shadow:0 18px 44px rgba(37,99,235,.28)!important}
+
+/* Login */
+body.auth-clean-page.ui-refresh{overflow:auto!important;min-height:100svh!important;display:grid!important;place-items:center!important;padding:clamp(16px,3vw,34px)!important;background-position:center!important}
+.v9-auth-shell{min-height:auto!important;width:min(1100px,100%)!important;padding:0!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;place-items:center!important}
+.v9-auth-panel{
+  width:min(460px,100%)!important;min-width:0!important;
+  padding:28px!important;border-radius:30px!important;
+  background:linear-gradient(180deg,rgba(2,6,23,.76),rgba(2,6,23,.56))!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  box-shadow:0 32px 110px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)!important;
+  backdrop-filter:blur(18px) saturate(130%)!important;
+}
+.v9-auth-panel .auth-clean-copy{margin-top:12px!important;margin-bottom:4px!important}
+.v9-auth-panel .auth-clean-copy h1{text-transform:none!important;font-size:clamp(2rem,5vw,3.15rem)!important;line-height:1!important;letter-spacing:-.055em!important}
+.v9-auth-panel .auth-clean-copy>p:not(.eyebrow){color:#dbeafe!important;text-shadow:none!important}
+.v9-form-card{margin-top:8px!important;gap:12px!important}
+.v9-form-card .input-wrap{
+  min-height:52px!important;padding:0 14px!important;border-radius:16px!important;
+  background:rgba(248,250,252,.96)!important;border:1px solid rgba(255,255,255,.62)!important;
+  box-shadow:0 12px 30px rgba(2,6,23,.23),inset 0 1px 0 rgba(255,255,255,.88)!important;
+}
+.v9-form-card .input-wrap input,.v9-form-card .input-wrap select{min-height:51px!important;color:#0f172a!important;font-weight:750!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.v9-form-card .input-wrap i,.v9-form-card .field-icon{color:#64748b!important}
+.v9-form-card .auth-main-btn{min-height:52px!important;text-transform:none!important;letter-spacing:0!important;border-radius:16px!important;background:linear-gradient(135deg,#2563eb,#0ea5e9)!important;box-shadow:0 18px 42px rgba(37,99,235,.32)!important}
+.v9-form-card .auth-main-btn.success{background:linear-gradient(135deg,#10b981,#06b6d4)!important}
+.auth-switch,.auth-forgot{color:#dbeafe!important;text-shadow:none!important}
+.register-title{background:rgba(15,23,42,.72)!important;border:1px solid rgba(255,255,255,.12)!important}
+
+/* Dashboard */
+.app-layout{grid-template-columns:292px minmax(0,1fr)!important;min-height:100svh!important}
+.sidebar{position:sticky!important;top:0!important;height:100svh!important;padding:22px!important;gap:24px!important;border-right:1px solid rgba(255,255,255,.10)!important;border-radius:0!important}
+.logo-area{padding:10px!important;border-radius:20px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+.brand-name{font-size:1rem;letter-spacing:-.02em}.brand-sub{margin-top:2px;color:#aebbd0!important}
+.nav{display:flex!important;flex-direction:column!important;gap:8px!important;min-height:0;flex:1}
+.nav-btn{min-height:48px!important;border-radius:16px!important;padding:0 14px!important;color:#aebbd0!important;background:transparent!important;border:1px solid transparent!important;font-weight:800!important;letter-spacing:-.01em!important}
+.nav-btn i{font-size:1.18rem!important}.nav-btn:hover{background:rgba(255,255,255,.06)!important;color:#fff!important;border-color:rgba(255,255,255,.08)!important}.nav-btn.active{background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(99,102,241,.14))!important;color:#fff!important;border-color:rgba(125,211,252,.22)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 12px 34px rgba(37,99,235,.15)!important}.nav-btn.active{box-shadow:none}.nav-btn.logout{margin-top:auto!important;color:#fecaca!important;background:rgba(239,68,68,.06)!important;border-color:rgba(248,113,113,.12)!important}
+.app-content{width:100%;max-width:1440px;margin:0 auto;padding:clamp(16px,2.4vw,34px)!important}
+.hero-banner{border-radius:28px!important;padding:clamp(20px,3vw,32px)!important;margin-bottom:22px!important;grid-template-columns:minmax(0,1fr) auto!important}.hero-banner h1{font-size:clamp(1.8rem,4vw,3.1rem);letter-spacing:-.055em;margin:0 0 8px}.hero-banner p{color:#cbd5e1;margin:0;line-height:1.6}.hero-metrics{align-items:center}.metric,.status-pill{border-radius:999px!important;background:rgba(2,6,23,.42)!important;border:1px solid rgba(255,255,255,.12)!important}
+.dashboard-grid{grid-template-columns:minmax(320px,390px) minmax(0,1fr)!important;gap:22px!important}.card{border-radius:26px!important;padding:clamp(18px,2vw,24px)!important}.section-title{color:#cbd5e1!important;letter-spacing:.06em!important}.tournament-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))!important}.player-card,.mini-tournament,.participant-row,.tournament-card,.match-card,.contact-card{border-radius:18px!important;border:1px solid rgba(255,255,255,.10)!important;background:rgba(255,255,255,.045)!important}.table-wrap{overflow:auto;border-radius:18px}.leaderboard-table{min-width:680px}
+
+@media(max-width:960px){
+  body,body.ui-refresh,body.auth-clean-page.ui-refresh,body.landing-simple-page.ui-refresh{background-attachment:scroll!important;background-position:center top!important}
+  .app-layout{display:block!important;min-height:100svh!important}.sidebar{position:sticky!important;top:0!important;height:auto!important;z-index:20;padding:12px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.10)!important;background:rgba(2,6,23,.88)!important}.logo-area{margin-bottom:10px}.nav{display:grid!important;grid-template-columns:repeat(5,minmax(76px,1fr))!important;gap:8px!important;overflow-x:auto;padding-bottom:3px}.nav-btn{min-width:76px!important;min-height:58px!important;flex-direction:column!important;justify-content:center!important;gap:4px!important;padding:8px!important;text-align:center!important;font-size:.72rem!important}.nav-btn.logout{margin-top:0!important}.nav-btn span{white-space:nowrap}.app-content{padding:16px!important}.hero-banner{grid-template-columns:1fr!important}.dashboard-grid{grid-template-columns:1fr!important}.hero-metrics{display:flex!important}.tournament-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:560px){
+  .v9-auth-panel{padding:20px!important;border-radius:24px!important}.v9-auth-panel .auth-clean-copy{margin-top:8px!important}.v9-form-card .input-wrap{min-height:50px!important}.v9-welcome-card{border-radius:24px!important;text-align:left!important}.nav{grid-template-columns:repeat(5,82px)!important}.hero-metrics{display:grid!important;grid-template-columns:1fr}.player-card{align-items:flex-start!important;flex-direction:column!important}.row-actions{width:100%;display:flex;gap:8px;flex-wrap:wrap}.row-actions .btn{flex:1}.form-row{grid-template-columns:1fr!important}.modal-content{width:calc(100vw - 28px)!important;max-height:calc(100svh - 28px);overflow:auto}
+}
