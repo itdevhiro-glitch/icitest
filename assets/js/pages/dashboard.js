@@ -69,7 +69,7 @@ function renderDashboard() {
 
   if (currentType === 'user') {
     $('#roster-count').textContent = 'Solo';
-    $('#roster-list').innerHTML = `<article class="player-card"><span class="role-badge role-sub">USER</span><div class="player-main"><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state">Akun user hanya bisa ikut tournament Solo / 1v1 Brawl. Mode Team 5v5 sengaja disembunyikan.</div>`;
+    $('#roster-list').innerHTML = `<article class="player-card"><span class="role-badge role-sub">USER</span><div class="player-main"><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state">Akun user hanya bisa ikut tournament 1 vs 1 Brawl. Mode Team 5v5 sengaja disembunyikan.</div>`;
     $('#add-player-form').classList.add('hidden');
     return;
   }
@@ -102,8 +102,8 @@ $('#add-player-form').addEventListener('submit', async event => {
 window.removePlayer = async function(teamKey, index) { if (!confirm('Remove player?')) return; const snap = await database.ref(`teams/${teamKey}/players`).once('value'); const players = snap.val() || []; players.splice(index, 1); await database.ref(`teams/${teamKey}/players`).set(players); toast('Player dihapus.', 'success'); };
 
 function visibleTournament(t) {
-  if (currentType === 'user') return t.mode === 'brawl' || t.mode === 'solo';
-  return t.mode !== 'solo';
+  if (currentType === 'user') return t.mode === 'brawl';
+  return t.mode === 'team' || t.mode === 'brawl';
 }
 function renderTournaments(tournaments) {
   const grid = $('#tournament-grid');
@@ -122,8 +122,12 @@ function renderTournamentAction(id, t, participant) {
     return `<button class="btn muted" disabled>Registered</button>`;
   }
   if (t.status !== 'registration') return `<button class="btn muted" disabled>Closed</button>`;
-  if (t.mode === 'team') return `<button class="btn" onclick="openTeamJoinModal('${id}', ${Number(t.fee || 0)}, ${Number(t.playerPerTeam || 5)})">Join Team 5v5</button>`;
-  return `<button class="btn brawl" onclick="openSoloJoinModal('${id}', ${Number(t.fee || 0)})">Join ${modeLabel(t.mode)}</button>`;
+  if (t.mode === 'team') {
+    if (currentType !== 'team') return `<button class="btn muted" disabled>Khusus Team</button>`;
+    return `<button class="btn" onclick="openTeamJoinModal('${id}', ${Number(t.fee || 0)}, ${Number(t.playerPerTeam || 5)})">Join Team 5v5</button>`;
+  }
+  if (t.mode === 'brawl') return `<button class="btn brawl" onclick="openSoloJoinModal('${id}', ${Number(t.fee || 0)})">Join 1 vs 1 Brawl</button>`;
+  return `<button class="btn muted" disabled>Mode tidak tersedia</button>`;
 }
 
 window.openTeamJoinModal = function(tid, fee, playerPerTeam) {
@@ -146,7 +150,7 @@ window.confirmTeamRegistration = async function() {
   await completeRegistration(pendingRegistration.tid, 'approved', extra);
 };
 window.openSoloJoinModal = function(tid, fee) {
-  pendingRegistration = { tid, fee, mode: currentType === 'team' ? 'brawl' : 'user' };
+  pendingRegistration = { tid, fee, mode: 'brawl' };
   const players = currentType === 'team' ? (currentData.players || []) : [{ name: currentData.displayName || currentData.username, id: currentData.gameId || currentData.username, role: 'Solo Player' }];
   if (!players.length) return toast('Tambahkan roster dulu sebelum join 1 vs 1 Brawl.', 'danger');
   $('#brawlPlayer').innerHTML = players.map((p, i) => `<option value="${i}">${escapeHtml(p.name)} • ${escapeHtml(p.role)} • ID ${escapeHtml(p.id)}</option>`).join('');

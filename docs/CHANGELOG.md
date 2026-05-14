@@ -19,3 +19,10 @@
 - Participant menyimpan WhatsApp untuk kontak cepat via Admin Panel.
 - Bracket generation melakukan validasi approved payment, slot, duplicate, dan jumlah player sebelum start.
 - UI/UX diperhalus dengan wallpaper Clint Soul Vessels, navbar lebih jelas, checkbox lineup, dan bracket visual lebih rapi.
+
+
+## v4
+- Menghapus mode admin `User Solo`.
+- Akun user biasa sekarang hanya melihat dan join `1 vs 1 Brawl`.
+- Team tetap bisa join `Team 5v5`; 1v1 Brawl bisa memakai salah satu player roster.
+- Leaderboard brawl untuk akun user tidak lagi dipaksa masuk ke data team.

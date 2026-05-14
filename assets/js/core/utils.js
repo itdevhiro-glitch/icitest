@@ -50,7 +50,6 @@ export function getRoundKeys(bracket = {}) {
 
 export function modeLabel(mode = 'team') {
   if (mode === 'brawl') return '1 VS 1 BRAWL';
-  if (mode === 'solo') return 'USER SOLO';
   return 'TEAM 5V5';
 }
 
