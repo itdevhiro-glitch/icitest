@@ -9,7 +9,7 @@ let activeBracketId = null;
 let pendingRegistration = null;
 const refs = [];
 
-const sections = { dashboard: $('#dashboard-section'), leaderboard: $('#leaderboard-section'), bracket: $('#bracket-section') };
+const sections = { dashboard: $('#dashboard-section'), leaderboard: $('#leaderboard-section'), bracket: $('#bracket-section'), profile: $('#profile-section') };
 function listen(path, callback) { const ref = database.ref(path); ref.on('value', callback); refs.push(ref); }
 function cleanupListeners() { refs.splice(0).forEach(ref => ref.off()); }
 
@@ -20,6 +20,25 @@ window.showSection = function(sectionId, btn) {
   if (btn) btn.classList.add('active');
 };
 window.handleLogout = async function() { cleanupListeners(); await auth.signOut(); window.location.href = 'login.html'; };
+window.copyWA = async function(value = '') {
+  const wa = normalizeWhatsApp(value);
+  if (!wa) return toast('Nomor WhatsApp belum tersedia.', 'danger');
+  try {
+    await navigator.clipboard.writeText(wa);
+    toast(`Nomor WA ${wa} berhasil dicopy.`, 'success');
+  } catch {
+    prompt('Copy nomor WhatsApp ini:', wa);
+  }
+};
+function waAction(wa = '') {
+  const clean = normalizeWhatsApp(wa);
+  if (!clean) return '<span class="empty-wa">WA kosong</span>';
+  return `<button class="btn small ghost" onclick="copyWA('${clean}')"><i class="ri-file-copy-line"></i> Copy WA</button><a class="btn small success" target="_blank" href="https://wa.me/${clean}"><i class="ri-whatsapp-line"></i> Chat</a>`;
+}
+function renderProfileForm() {
+  const input = $('#profileWhatsapp');
+  if (input && currentData) input.value = currentData.whatsapp || '';
+}
 
 auth.onAuthStateChanged(async user => {
   if (!user) return (window.location.href = 'login.html');
@@ -34,9 +53,10 @@ function initDashboard() {
     <button class="nav-btn active" onclick="showSection('dashboard', this)"><i class="ri-dashboard-line"></i><span>Dashboard</span></button>
     <button class="nav-btn" onclick="showSection('leaderboard', this)"><i class="ri-trophy-line"></i><span>Leaderboard</span></button>
     <button class="nav-btn" onclick="showSection('bracket', this)"><i class="ri-organization-chart"></i><span>Brackets</span></button>
+    <button class="nav-btn" onclick="showSection('profile', this)"><i class="ri-user-settings-line"></i><span>Edit Profile</span></button>
     <button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button>`;
   const accountPath = currentType === 'team' ? `teams/${currentKey}` : `users/${currentKey}`;
-  listen(accountPath, snap => { currentData = snap.val(); renderDashboard(); });
+  listen(accountPath, snap => { currentData = snap.val(); renderDashboard(); renderProfileForm(); });
   listen('tournaments', snap => { const t = snap.val() || {}; renderTournaments(t); renderBracketView(t); });
   listen('teams', snap => renderLeaderboard(snap.val() || {}));
 }
@@ -49,7 +69,7 @@ function renderDashboard() {
 
   if (currentType === 'user') {
     $('#roster-count').textContent = 'Solo';
-    $('#roster-list').innerHTML = `<article class="player-card"><span class="role-badge role-sub">USER</span><div class="player-main"><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div></article><div class="empty-state">Akun user hanya bisa ikut tournament Solo / 1v1 Brawl. Mode Team 5v5 sengaja disembunyikan.</div>`;
+    $('#roster-list').innerHTML = `<article class="player-card"><span class="role-badge role-sub">USER</span><div class="player-main"><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state">Akun user hanya bisa ikut tournament Solo / 1v1 Brawl. Mode Team 5v5 sengaja disembunyikan.</div>`;
     $('#add-player-form').classList.add('hidden');
     return;
   }
@@ -152,5 +172,48 @@ window.closeModal = function(id) { $(`#${id}`).classList.add('hidden'); };
 window.showBracketView = async function(tournamentId) { activeBracketId = tournamentId; window.showSection('bracket', $$('.nav-btn')[2]); const snap = await database.ref(`tournaments/${tournamentId}`).once('value'); renderSingleBracket(snap.val()); };
 function renderBracketView(tournaments) { if (!activeBracketId) return; const t = tournaments[activeBracketId]; if (t) renderSingleBracket(t); }
 function participantName(t, id) { return t?.participants?.[id]?.displayName || t?.participants?.[id]?.teamName || id || 'TBD'; }
-function renderSingleBracket(t) { const host = $('#tournament-bracket-view'); if (!t?.bracket) return (host.innerHTML = '<div class="empty-state">Bracket belum dibuat admin.</div>'); host.innerHTML = `<div class="bracket-heading"><div><h2>${escapeHtml(t.name)}</h2><span>${modeLabel(t.mode)} • ${escapeHtml(t.status)}</span></div></div><div class="bracket-scroll">${getRoundKeys(t.bracket).map(roundKey => `<section class="round-column"><h3>${roundKey === 'bronze' ? 'Bronze Match' : roundKey.toUpperCase()}</h3>${t.bracket[roundKey].map(m => `<article class="match-card ${m.completed ? 'done' : ''}"><div class="match-meta"><span>${escapeHtml(m.id)}</span><b>BO${m.format || 1}</b></div><div class="match-team ${m.winner === m.teamA ? 'winner' : m.winner ? 'loser' : ''}"><span>${escapeHtml(participantName(t, m.teamA))}</span><strong>${m.scoreA || 0}</strong></div><div class="match-team ${m.winner === m.teamB ? 'winner' : m.winner ? 'loser' : ''}"><span>${escapeHtml(participantName(t, m.teamB))}</span><strong>${m.scoreB || 0}</strong></div></article>`).join('')}</section>`).join('')}</div>`; }
+function renderSingleBracket(t) {
+  const host = $('#tournament-bracket-view');
+  if (!t?.bracket) return (host.innerHTML = '<div class="empty-state">Bracket belum dibuat admin.</div>');
+  const participantContacts = Object.entries(t.participants || {}).map(([key,p]) => `
+    <article class="contact-card"><div><b>${escapeHtml(p.displayName || p.teamName || key)}</b><small>${escapeHtml(p.type || t.mode)} • ${p.selectedPlayers ? `${p.selectedPlayers.length} player` : escapeHtml(p.role || 'Participant')}</small></div><div class="row-actions">${waAction(p.whatsapp || '')}</div></article>`).join('');
+  host.innerHTML = `<div class="bracket-heading"><div><h2>${escapeHtml(t.name)}</h2><span>${modeLabel(t.mode)} • ${escapeHtml(t.status)}</span></div></div>
+  <div class="contact-panel"><div class="section-title"><i class="ri-whatsapp-line"></i> Kontak Koordinasi Lawan</div><div class="contact-grid">${participantContacts || '<div class="empty-state">Belum ada kontak participant.</div>'}</div></div>
+  <div class="bracket-scroll">${getRoundKeys(t.bracket).map(roundKey => `<section class="round-column"><h3>${roundKey === 'bronze' ? 'Bronze Match' : roundKey.toUpperCase()}</h3>${t.bracket[roundKey].map(m => renderPublicMatch(t,m)).join('')}</section>`).join('')}</div>`;
+}
+function renderPublicMatch(t,m){
+  const a=t.participants?.[m.teamA], b=t.participants?.[m.teamB];
+  return `<article class="match-card ${m.completed ? 'done' : ''}"><div class="match-meta"><span>${escapeHtml(m.id)}</span><b>BO${m.format || 1}</b></div>
+  <div class="match-team ${m.winner === m.teamA ? 'winner' : m.winner ? 'loser' : ''}"><span>${escapeHtml(participantName(t, m.teamA))}</span><strong>${m.scoreA || 0}</strong></div>
+  <div class="match-contact">${waAction(a?.whatsapp || '')}</div>
+  <div class="match-team ${m.winner === m.teamB ? 'winner' : m.winner ? 'loser' : ''}"><span>${escapeHtml(participantName(t, m.teamB))}</span><strong>${m.scoreB || 0}</strong></div>
+  <div class="match-contact">${waAction(b?.whatsapp || '')}</div></article>`;
+}
+
+$('#profile-form')?.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!currentData || !auth.currentUser) return;
+  const button = event.target.querySelector('button[type="submit"]');
+  button.disabled = true;
+  try {
+    const wa = normalizeWhatsApp($('#profileWhatsapp').value.trim());
+    const newPassword = $('#profilePassword').value.trim();
+    if (!/^62\d{8,15}$/.test(wa)) throw new Error('Nomor WhatsApp tidak valid. Contoh: 08123456789');
+    const path = currentType === 'team' ? `teams/${currentKey}` : `users/${currentKey}`;
+    await database.ref(`${path}/whatsapp`).set(wa);
+    if (newPassword) {
+      if (newPassword.length < 6) throw new Error('Password minimal 6 karakter.');
+      await auth.currentUser.updatePassword(newPassword);
+      $('#profilePassword').value = '';
+    }
+    toast('Profile berhasil diupdate.', 'success');
+  } catch (error) {
+    const msg = String(error.message || error);
+    if (msg.includes('requires-recent-login')) toast('Untuk ganti password, logout lalu login ulang dulu agar Firebase mengizinkan perubahan password.', 'danger');
+    else toast(msg, 'danger');
+  } finally {
+    button.disabled = false;
+  }
+});
+
 function renderLeaderboard(teams) { const tbody = $('#leaderboard-body'); const rows = Object.values(teams).map(t => { const s = t.stats || {}; const free = (s.ch1||0)*5+(s.ch2||0)*3+(s.ch3||0); const paid=(s.paidCh1||0)*7+(s.paidCh2||0)*4+(s.paidCh3||0)*2; const brawl=(s.brawlCh1||0)*4+(s.brawlCh2||0)*2+(s.brawlCh3||0); return { name:t.teamName, username:t.username, free, paid, brawl, total: free+paid+brawl }; }).sort((a,b)=>b.total-a.total); tbody.innerHTML = rows.map((r,i)=>`<tr><td>#${i+1}</td><td><strong>${escapeHtml(r.name)}</strong><small>${escapeHtml(r.username)}</small></td><td>${r.free}</td><td>${r.paid}</td><td>${r.brawl}</td><td><b>${r.total}</b></td></tr>`).join('') || '<tr><td colspan="6">No leaderboard data.</td></tr>'; }

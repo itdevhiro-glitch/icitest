@@ -1,1 +1,41 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="0; url=login.html"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Icikiwir Esports</title></head><body>Redirecting to <a href="login.html">login</a>...</body></html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Icikiwir Esports Pro</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <nav class="landing-nav">
+      <div class="logo-area"><div class="logo-icon"><i class="ri-gamepad-fill"></i></div><div class="brand-name">Icikiwir<span class="brand-sub">Esports Tournament System</span></div></div>
+      <a class="btn ghost" href="login.html"><i class="ri-login-box-line"></i> Login</a>
+    </nav>
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <span class="badge">Team 5v5 • User Solo • 1v1 Brawl</span>
+        <h1>Manage tournament lebih rapi, aman, dan gampang koordinasi.</h1>
+        <p>Sistem bracket realtime, validasi roster, kontak WhatsApp tiap participant, leaderboard, dan dashboard admin untuk mengatur tournament tanpa bentrok data.</p>
+        <div class="landing-actions">
+          <a class="btn" href="login.html"><i class="ri-rocket-line"></i> Masuk Dashboard</a>
+          <a class="btn ghost" href="login.html#register"><i class="ri-user-add-line"></i> Register</a>
+        </div>
+      </div>
+      <div class="landing-panel card">
+        <div class="section-title"><i class="ri-shield-check-line"></i> System Highlights</div>
+        <div class="feature-list">
+          <article><i class="ri-team-line"></i><div><b>Team login</b><small>Join Team 5v5 dengan lineup sesuai batas admin.</small></div></article>
+          <article><i class="ri-user-star-line"></i><div><b>User login</b><small>Solo user hanya melihat mode solo dan 1v1 brawl.</small></div></article>
+          <article><i class="ri-whatsapp-line"></i><div><b>Copy WhatsApp</b><small>Nomor lawan bisa dicopy dari participant dan bracket.</small></div></article>
+          <article><i class="ri-git-branch-line"></i><div><b>Safe bracket</b><small>Bracket dikunci setelah validasi slot, payment, dan roster.</small></div></article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    if (location.hash === '#register') sessionStorage.setItem('openRegister','1');
+  </script>
+</body>
+</html>

@@ -41,6 +41,15 @@
         <div class="section-title"><i class="ri-organization-chart"></i> Tournament Bracket</div>
         <div id="tournament-bracket-view"><div class="empty-state">Pilih tournament untuk melihat bracket.</div></div>
       </section>
+      <section id="profile-section" class="card hidden">
+        <div class="section-title"><i class="ri-user-settings-line"></i> Edit Profile</div>
+        <div class="profile-note">Yang bisa diedit hanya nomor HP/WhatsApp dan password. Username, email, nama team/user, dan data tournament dikunci agar data bracket tidak rusak.</div>
+        <form id="profile-form" class="form-grid profile-form">
+          <label>Nomor WhatsApp / HP<input id="profileWhatsapp" placeholder="08123456789" required></label>
+          <label>Password Baru <small>Kosongkan kalau tidak ingin ganti password.</small><input id="profilePassword" type="password" placeholder="Minimal 6 karakter"></label>
+          <button class="btn success" type="submit"><i class="ri-save-3-line"></i> Save Profile</button>
+        </form>
+      </section>
     </main>
   </div>
   <div id="rules-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Tournament Rules</h2><button class="close-btn" onclick="closeModal('rules-modal')">&times;</button></div><div id="rules-content" class="rule-book"></div></div></div>

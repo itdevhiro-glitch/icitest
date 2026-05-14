@@ -17,12 +17,19 @@ auth.onAuthStateChanged(user => {
   window.location.href = user.uid === ADMIN_UID ? 'admin.html' : 'dashboard.html';
 });
 
-$('#to-register-btn').addEventListener('click', event => {
-  event.preventDefault();
+function showRegisterPanel() {
   loginForm.classList.add('hidden');
   registerForm.classList.remove('hidden');
   showAuthMessage('');
+}
+$('#to-register-btn').addEventListener('click', event => {
+  event.preventDefault();
+  showRegisterPanel();
 });
+if (location.hash === '#register' || sessionStorage.getItem('openRegister') === '1') {
+  sessionStorage.removeItem('openRegister');
+  showRegisterPanel();
+}
 
 $('#to-login-btn').addEventListener('click', event => {
   event.preventDefault();
