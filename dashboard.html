@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Icikiwir Esports</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="logo-area"><div class="logo-icon"><i class="ri-gamepad-fill"></i></div><div class="brand-name">Icikiwir<span class="brand-sub">Esports Manager</span></div></div>
+      <nav id="main-nav" class="nav"></nav>
+    </aside>
+    <main class="app-content">
+      <section class="hero-banner">
+        <div><h1 id="team-name">Loading...</h1><p>Manage roster, join tournament, dan pantau bracket realtime.</p></div>
+        <div class="hero-metrics"><span id="team-status" class="status-pill muted">Checking</span><span class="metric">Roster <b id="roster-count">0/10</b></span></div>
+      </section>
+      <section id="dashboard-section" class="dashboard-grid">
+        <div class="card">
+          <div class="section-title"><i class="ri-team-line"></i> Active Roster</div>
+          <div id="roster-list" class="roster-list"></div>
+          <form id="add-player-form" class="form-grid" style="margin-top:16px">
+            <select id="playerRole" required><option value="" disabled selected>Select Role</option><option>Jungler</option><option>Roamer</option><option>MidLane</option><option>ExpLane</option><option>GoldLane</option><option>Cadangan</option></select>
+            <div class="form-row"><input id="playerName" placeholder="Nickname" required><input id="playerId" placeholder="Game ID" required></div>
+            <button class="btn" type="submit">Add Player</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="section-title"><i class="ri-trophy-line"></i> Available Tournaments</div>
+          <div id="tournament-grid" class="tournament-grid"><div class="empty-state">Loading events...</div></div>
+        </div>
+      </section>
+      <section id="leaderboard-section" class="card hidden">
+        <div class="section-title"><i class="ri-bar-chart-line"></i> Leaderboard</div>
+        <div class="table-wrap"><table class="leaderboard-table"><thead><tr><th>Rank</th><th>Team</th><th>Free</th><th>Paid</th><th>Brawl</th><th>Total</th></tr></thead><tbody id="leaderboard-body"></tbody></table></div>
+      </section>
+      <section id="bracket-section" class="card hidden">
+        <div class="section-title"><i class="ri-organization-chart"></i> Tournament Bracket</div>
+        <div id="tournament-bracket-view"><div class="empty-state">Pilih tournament untuk melihat bracket.</div></div>
+      </section>
+    </main>
+  </div>
+  <div id="rules-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Tournament Rules</h2><button class="close-btn" onclick="closeModal('rules-modal')">&times;</button></div><div id="rules-content" class="rule-book"></div></div></div>
+  <div id="payment-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Registration Payment</h2><button class="close-btn" onclick="closeModal('payment-modal')">&times;</button></div><p>Transfer via Saweria / Trakteer, screenshot bukti pembayaran, lalu kirim ke Discord admin.</p><h1 id="payment-fee-display">Rp 0</h1><div class="form-grid"><a href="https://saweria.co/icikiwir" target="_blank" class="btn warning">Saweria</a><a href="https://trakteer.id/icikiwir" target="_blank" class="btn danger">Trakteer</a><a href="https://discord.gg/icikiwir" target="_blank" class="btn ghost">Discord</a><button class="btn success" onclick="confirmPayment()">I have paid</button></div></div></div>
+  <div id="brawl-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join 1 vs 1 Brawl</h2><button class="close-btn" onclick="closeModal('brawl-modal')">&times;</button></div><p>Pilih satu player dari roster untuk masuk bracket Brawl.</p><select id="brawlPlayer"></select><button class="btn brawl" style="margin-top:14px;width:100%" onclick="confirmBrawlRegistration()">Confirm Brawl Player</button></div></div>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/dashboard.js"></script>
+</body>
+</html>

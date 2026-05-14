@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Icikiwir Esports</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="logo-area"><div class="logo-icon"><i class="ri-admin-line"></i></div><div class="brand-name">Admin<span class="brand-sub">Control Center</span></div></div>
+      <nav class="nav"><button class="nav-btn active" onclick="showSection('dashboard')"><i class="ri-dashboard-line"></i><span>Dashboard</span></button><button class="nav-btn" onclick="showSection('teams')"><i class="ri-group-line"></i><span>Teams</span></button><button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button></nav>
+    </aside>
+    <main class="app-content">
+      <div class="topbar"><div><h1>Tournament Admin</h1><p>Create event, approve payment, manage bracket, dan update leaderboard.</p></div></div>
+      <section id="admin-dashboard-section" class="dashboard-grid">
+        <div class="card">
+          <div class="section-title"><i class="ri-add-circle-line"></i> Create Tournament</div>
+          <form id="create-tournament-form" class="form-grid">
+            <input id="tourName" placeholder="Tournament Name" required>
+            <div class="form-row"><select id="tourMode"><option value="team">Team Tournament</option><option value="brawl">1 vs 1 Brawl</option></select><select id="tourFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></div>
+            <div class="form-row"><input id="tourMax" type="number" min="2" placeholder="Max Slots" required><input id="tourDate" type="date" required></div>
+            <div class="form-row"><input id="tourFee" type="number" min="0" placeholder="Fee 0 = Free" required><input id="tourPrize" type="number" min="0" placeholder="Total Prize Pool" required></div>
+            <textarea id="tourRules" rows="5" placeholder="Tournament rules..." required></textarea>
+            <button class="btn" type="submit">Create Tournament</button>
+          </form>
+        </div>
+        <div class="card"><div class="section-title"><i class="ri-list-check"></i> Tournament List</div><div id="tournament-list-container" class="roster-list"><div class="empty-state">Loading...</div></div></div>
+      </section>
+      <section id="admin-teams-section" class="card hidden"><div class="section-title"><i class="ri-shield-star-line"></i> Team Stats Manager</div><div id="team-stats-list" class="teams-grid"></div></section>
+      <section id="tournament-control-section" class="card hidden">
+        <button class="btn ghost small" onclick="showSection('dashboard')"><i class="ri-arrow-left-line"></i> Back</button>
+        <div class="bracket-heading"><div><h2 id="control-title">Control</h2><span id="format-display"></span><p id="fee-display"></p></div></div>
+        <div class="dashboard-grid">
+          <div class="card"><div class="section-title">Actions</div><div id="admin-actions" class="form-grid"></div></div>
+          <div class="card"><div class="section-title">Participants</div><ul id="participant-list" class="roster-list"></ul></div>
+        </div>
+        <div style="margin-top:22px"><div class="section-title"><i class="ri-flow-chart"></i> Live Bracket Control</div><div id="admin-bracket-view"></div></div>
+      </section>
+    </main>
+  </div>
+  <div id="score-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h3>Edit Match Score</h3><button class="close-btn" onclick="closeScoreModal()">&times;</button></div><p id="score-modal-match-info"></p><label>Match Format<select id="modalMatchFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></label><div class="score-grid"><div class="score-box"><h4 id="score-team-a-name">Team A</h4><input type="number" id="input-score-a"></div><strong>VS</strong><div class="score-box"><h4 id="score-team-b-name">Team B</h4><input type="number" id="input-score-b"></div></div><div class="modal-actions"><button class="btn ghost" onclick="saveMatchScore(false)">Save Score</button><button class="btn success" onclick="saveMatchScore(true)">Done & Advance</button></div></div></div>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/admin.js"></script>
+</body>
+</html>
