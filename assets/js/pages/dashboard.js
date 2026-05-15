@@ -13,16 +13,30 @@ let leaderboardMode = 'team';
 const refs = [];
 
 const sections = { dashboard: $('#dashboard-section'), leaderboard: $('#leaderboard-section'), bracket: $('#bracket-section'), profile: $('#profile-section') };
+let activeSectionId = 'dashboard';
 function listen(path, callback) { const ref = database.ref(path); ref.on('value', callback); refs.push(ref); }
 function cleanupListeners() { refs.splice(0).forEach(ref => ref.off()); }
 
+function playSectionEnter(section) {
+  if (!section) return;
+  section.classList.remove('section-enter', 'section-enter-active');
+  section.classList.add('section-enter');
+  requestAnimationFrame(() => section.classList.add('section-enter-active'));
+  window.setTimeout(() => section.classList.remove('section-enter', 'section-enter-active'), 360);
+}
+
 window.showSection = function(sectionId, btn) {
-  Object.values(sections).forEach(section => section.classList.add('hidden'));
-  sections[sectionId]?.classList.remove('hidden');
+  const target = sections[sectionId];
+  if (!target) return;
+  if (activeSectionId !== sectionId) {
+    Object.entries(sections).forEach(([id, section]) => section.classList.toggle('hidden', id !== sectionId));
+    playSectionEnter(target);
+    activeSectionId = sectionId;
+  }
   $$('.nav-btn').forEach(el => el.classList.remove('active'));
   if (btn) btn.classList.add('active');
 };
-window.handleLogout = async function() { cleanupListeners(); await auth.signOut(); window.location.href = 'login.html'; };
+window.handleLogout = async function() { cleanupListeners(); await auth.signOut(); window.smoothNavigate ? window.smoothNavigate('login.html') : (window.location.href = 'login.html'); };
 window.copyWA = async function(value = '') {
   const wa = normalizeWhatsApp(value);
   if (!wa) return toast('Nomor WhatsApp belum tersedia.', 'danger');
@@ -44,10 +58,10 @@ function renderProfileForm() {
 }
 
 auth.onAuthStateChanged(async user => {
-  if (!user) return (window.location.href = 'login.html');
-  if (user.uid === ADMIN_UID) return (window.location.href = 'admin.html');
+  if (!user) return (window.smoothNavigate ? window.smoothNavigate('login.html') : (window.location.href = 'login.html'));
+  if (user.uid === ADMIN_UID) return (window.smoothNavigate ? window.smoothNavigate('admin.html') : (window.location.href = 'admin.html'));
   const result = await getAccountByUID(user.uid);
-  if (!result) { toast('Data akun tidak ditemukan.', 'danger'); await auth.signOut(); return (window.location.href = 'login.html'); }
+  if (!result) { toast('Data akun tidak ditemukan.', 'danger'); await auth.signOut(); return (window.smoothNavigate ? window.smoothNavigate('login.html') : (window.location.href = 'login.html')); }
   currentKey = result.key; currentType = result.type; initDashboard();
 });
 
@@ -68,11 +82,15 @@ function initDashboard() {
 function renderDashboard() {
   const title = currentType === 'team' ? currentData?.teamName : currentData?.displayName;
   $('#team-name').textContent = title || '-';
-  $('#team-status').textContent = currentType === 'team' ? (currentData?.isBanned ? 'BANNED' : currentData?.isApproved ? 'VERIFIED TEAM' : 'WAITING APPROVAL') : 'SOLO USER';
+  const statusText = currentType === 'team' ? (currentData?.isBanned ? 'BANNED' : currentData?.isApproved ? 'VERIFIED TEAM' : 'WAITING APPROVAL') : 'SOLO USER';
+  $('#team-status').textContent = statusText;
   $('#team-status').className = `status-pill ${currentData?.isApproved || currentType === 'user' ? 'success' : 'muted'}`;
+  $('#dash-stat-status') && ($('#dash-stat-status').textContent = statusText);
+  $('#dash-stat-mode') && ($('#dash-stat-mode').textContent = currentType === 'team' ? 'Team 5v5 + Brawl' : 'Solo Brawl');
 
   if (currentType === 'user') {
     $('#roster-count').textContent = 'Solo';
+    $('#dash-stat-roster') && ($('#dash-stat-roster').textContent = 'Solo');
     $('#roster-list').innerHTML = `<article class="player-card solo-roster-card"><div class="solo-roster-avatar"><i class="ri-user-star-line"></i></div><div class="player-main solo-roster-main"><span class="role-badge role-sub">SOLO PLAYER</span><strong>${escapeHtml(currentData?.displayName || currentData?.username)}</strong><small>WA: ${escapeHtml(currentData?.whatsapp || '-')}</small></div><div class="row-actions solo-roster-actions">${waAction(currentData?.whatsapp || '')}</div></article><div class="empty-state solo-only-note">Akun user hanya bisa ikut tournament 1 vs 1 Brawl. Mode Team 5v5 sengaja disembunyikan agar alurnya tidak rancu.</div>`;
     $('#add-player-form').classList.add('hidden');
     return;
@@ -81,6 +99,7 @@ function renderDashboard() {
   const maxRoster = Number(currentData?.maxRoster || 10);
   const players = [...(currentData?.players || [])].sort((a, b) => roleWeight(a.role) - roleWeight(b.role));
   $('#roster-count').textContent = `${players.length}/${maxRoster}`;
+  $('#dash-stat-roster') && ($('#dash-stat-roster').textContent = `${players.length}/${maxRoster}`);
   $('#roster-list').innerHTML = players.length ? players.map((player, index) => `
     <article class="player-card">
       <span class="role-badge role-${roleClass(player.role)}">${escapeHtml(player.role)}</span>
@@ -112,6 +131,7 @@ function visibleTournament(t) {
 function renderTournaments(tournaments) {
   const grid = $('#tournament-grid');
   const rows = Object.entries(tournaments).filter(([,t]) => visibleTournament(t)).sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
+  $('#dash-stat-events') && ($('#dash-stat-events').textContent = rows.length);
   if (!rows.length) return (grid.innerHTML = `<div class="empty-state">Belum ada tournament yang cocok untuk akun ${currentType}.</div>`);
   grid.innerHTML = rows.map(([id, t]) => {
     const participant = t.participants?.[currentKey];

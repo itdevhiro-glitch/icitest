@@ -1,6 +1,7 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyAkV4bmhAyNxuB13Oz1WnvPHtfLjZldGLQ",
   authDomain: "icikiwircommunity-a9900.firebaseapp.com",
+  databaseURL: "https://icikiwircommunity-a9900-default-rtdb.firebaseio.com",
   projectId: "icikiwircommunity-a9900",
   storageBucket: "icikiwircommunity-a9900.firebasestorage.app",
   messagingSenderId: "855027081992",

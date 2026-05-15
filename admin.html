@@ -6,6 +6,10 @@
   <title>Admin Panel - Icikiwir Esports</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/watermark.css" />
+<script defer src="assets/js/core/page-transitions.js"></script>
+
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
 </head>
 <body>
   <div class="app-layout">
@@ -44,5 +48,24 @@
   </div>
   <div id="score-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h3>Edit Match Score</h3><button class="close-btn" onclick="closeScoreModal()">&times;</button></div><p id="score-modal-match-info"></p><label>Match Format<select id="modalMatchFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></label><div class="score-grid"><div class="score-box"><h4 id="score-team-a-name">Team A</h4><input type="number" id="input-score-a"></div><strong>VS</strong><div class="score-box"><h4 id="score-team-b-name">Team B</h4><input type="number" id="input-score-b"></div></div><div class="modal-actions"><button class="btn ghost" onclick="saveMatchScore(false)">Save Score</button><button class="btn success" onclick="saveMatchScore(true)">Done & Advance</button></div></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/admin.js"></script>
+
+
+
+
+<div class="hiro-watermark">
+    <div class="hiro-watermark-glow"></div>
+    <a href="https://www.instagram.com/hiro.esc/" target="_blank">
+        
+        <span class="hiro-name"></span>
+    </a>
+</div>
+
+<div class="hiro-signature" aria-label="Developer Instagram">
+  <a href="https://www.instagram.com/hiro.esc/" target="_blank" rel="noopener noreferrer">
+    <span class="hiro-dot" aria-hidden="true"></span>
+    <span class="hiro-text">hiro.esc</span>
+  </a>
+</div>
+
 </body>
 </html>

@@ -26,3 +26,9 @@
 - Akun user biasa sekarang hanya melihat dan join `1 vs 1 Brawl`.
 - Team tetap bisa join `Team 5v5`; 1v1 Brawl bisa memakai salah satu player roster.
 - Leaderboard brawl untuk akun user tidak lagi dipaksa masuk ke data team.
+
+## Register Clarity Update
+- Menambahkan penjelasan jelas bahwa email register wajib menggunakan domain `@icikiwir.digital`.
+- Menambahkan helper text bahwa Gmail/Yahoo/email pribadi tidak diperbolehkan untuk menghindari salah paham phishing.
+- Menambahkan penjelasan fungsi nomor WhatsApp/HP untuk koordinasi room, jadwal match, dan konfirmasi hasil.
+- Memperjelas validasi error register untuk email domain dan nomor WhatsApp.

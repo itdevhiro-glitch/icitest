@@ -1,0 +1,222 @@
+/* Register Agreement Gate */
+.register-agreement-overlay{
+  position:fixed;
+  inset:0;
+  z-index:999998;
+  display:none;
+  place-items:center;
+  padding:22px;
+  background:
+    radial-gradient(circle at top left, rgba(96,165,250,.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(168,85,247,.16), transparent 32%),
+    rgba(3,6,18,.72);
+  backdrop-filter:blur(18px) saturate(145%);
+  -webkit-backdrop-filter:blur(18px) saturate(145%);
+}
+
+.register-agreement-overlay.is-open{
+  display:grid;
+  animation:agreementFade .24s ease both;
+}
+
+.register-agreement-card{
+  width:min(760px, 100%);
+  max-height:calc(100vh - 44px);
+  overflow:auto;
+  border-radius:28px;
+  padding:28px;
+  color:#fff;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.045)),
+    rgba(10,14,28,.82);
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.12);
+  animation:agreementUp .34s cubic-bezier(.22,1,.36,1) both;
+}
+
+.agreement-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.78);
+  background:rgba(96,165,250,.14);
+  border:1px solid rgba(147,197,253,.18);
+}
+
+.register-agreement-card h2{
+  margin:16px 0 8px;
+  font-size:clamp(26px, 4vw, 42px);
+  line-height:1.04;
+  letter-spacing:-.04em;
+}
+
+.agreement-lead{
+  margin:0;
+  max-width:650px;
+  color:rgba(255,255,255,.68);
+  font-size:15px;
+  line-height:1.7;
+}
+
+.agreement-points{
+  display:grid;
+  gap:12px;
+  margin:24px 0;
+}
+
+.agreement-points article{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:14px;
+  padding:16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.agreement-points article > span{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:900;
+  color:#fff;
+  background:linear-gradient(135deg, #60a5fa, #8b5cf6);
+  box-shadow:0 10px 24px rgba(96,165,250,.18);
+}
+
+.agreement-points h3{
+  margin:0 0 5px;
+  font-size:15px;
+  letter-spacing:-.01em;
+}
+
+.agreement-points p{
+  margin:0;
+  color:rgba(255,255,255,.64);
+  font-size:13px;
+  line-height:1.65;
+}
+
+.agreement-check{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:15px;
+  border-radius:18px;
+  background:rgba(96,165,250,.08);
+  border:1px solid rgba(147,197,253,.14);
+  color:rgba(255,255,255,.72);
+  font-size:13px;
+  line-height:1.6;
+  cursor:pointer;
+}
+
+.agreement-check input{
+  margin-top:4px;
+  width:18px;
+  height:18px;
+  accent-color:#60a5fa;
+  flex:0 0 auto;
+}
+
+.agreement-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+}
+
+.agreement-btn{
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .2s ease, opacity .2s ease, box-shadow .2s ease;
+}
+
+.agreement-btn:hover{
+  transform:translateY(-2px);
+}
+
+.agreement-btn.ghost{
+  color:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.agreement-btn.primary{
+  color:#fff;
+  background:linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow:0 14px 30px rgba(37,99,235,.22);
+}
+
+.agreement-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
+body.register-agreement-lock{
+  overflow:hidden;
+}
+
+@keyframes agreementFade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes agreementUp{
+  from{opacity:0; transform:translateY(14px) scale(.98)}
+  to{opacity:1; transform:translateY(0) scale(1)}
+}
+
+@media(max-width:640px){
+  .register-agreement-overlay{
+    padding:14px;
+    align-items:end;
+  }
+
+  .register-agreement-card{
+    border-radius:24px;
+    padding:22px;
+    max-height:calc(100vh - 28px);
+  }
+
+  .agreement-points article{
+    padding:14px;
+  }
+
+  .agreement-actions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .agreement-btn{
+    width:100%;
+  }
+}
+
+
+/* Keep register page clean: old inline explanation boxes are intentionally hidden after agreement flow */
+.register-info-box,
+.registration-info-box,
+.email-domain-info,
+.wa-info-box,
+.register-helper-card,
+.register-notice{
+  display:none !important;
+}

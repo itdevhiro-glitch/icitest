@@ -6,6 +6,10 @@
   <title>Dashboard - Icikiwir Esports</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/watermark.css" />
+<script defer src="assets/js/core/page-transitions.js"></script>
+
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
 </head>
 <body class="dashboard-page pro-v10">
   <div class="app-layout v10-dashboard-layout">
@@ -14,11 +18,21 @@
       <nav id="main-nav" class="nav"></nav>
     </aside>
     <main class="app-content v10-dashboard-content">
-      <section class="hero-banner v10-dashboard-hero">
-        <div><h1 id="team-name">Loading...</h1><p>Manage roster, join tournament, dan pantau bracket realtime.</p></div>
+      <section class="hero-banner v10-dashboard-hero pro-dashboard-hero">
+        <div class="hero-copy">
+          <p class="dashboard-kicker">Player Control Center</p>
+          <h1 id="team-name">Loading...</h1>
+          <p>Kelola roster, daftar tournament, pantau bracket, dan koordinasi lawan dari satu dashboard yang ringan dan clean.</p>
+        </div>
         <div class="hero-metrics"><span id="team-status" class="status-pill muted">Checking</span><span class="metric">Roster <b id="roster-count">0/10</b></span></div>
       </section>
-      <section id="dashboard-section" class="dashboard-grid">
+      <section class="dashboard-quick-stats" aria-label="Dashboard summary">
+        <article><span><i class="ri-shield-check-line"></i></span><small>Status Akun</small><b id="dash-stat-status">Checking</b></article>
+        <article><span><i class="ri-team-line"></i></span><small>Roster</small><b id="dash-stat-roster">0/10</b></article>
+        <article><span><i class="ri-trophy-line"></i></span><small>Tournament Aktif</small><b id="dash-stat-events">0</b></article>
+        <article><span><i class="ri-sword-line"></i></span><small>Mode Akun</small><b id="dash-stat-mode">-</b></article>
+      </section>
+      <section id="dashboard-section" class="dashboard-grid dashboard-section-panel">
         <div class="card">
           <div class="section-title"><i class="ri-team-line"></i> Active Roster</div>
           <div id="roster-list" class="roster-list"></div>
@@ -33,15 +47,22 @@
           <div id="tournament-grid" class="tournament-grid"><div class="empty-state">Loading events...</div></div>
         </div>
       </section>
-      <section id="leaderboard-section" class="card hidden">
-        <div class="section-title"><i class="ri-bar-chart-line"></i> Leaderboard</div>
-        <div class="table-wrap"><table class="leaderboard-table"><thead><tr><th>Rank</th><th>Team</th><th>Free</th><th>Paid</th><th>Brawl</th><th>Total</th></tr></thead><tbody id="leaderboard-body"></tbody></table></div>
+      <section id="leaderboard-section" class="card hidden dashboard-section-panel leaderboard-card">
+        <div class="leaderboard-head">
+          <div class="section-title"><i class="ri-bar-chart-line"></i> Leaderboard</div>
+          <div class="leaderboard-tabs">
+            <button class="leaderboard-tab active" data-board="team" onclick="switchLeaderboard('team')">Team 5v5</button>
+            <button class="leaderboard-tab" data-board="solo" onclick="switchLeaderboard('solo')">Solo Brawl</button>
+          </div>
+        </div>
+        <div id="leaderboard-summary" class="leaderboard-summary"></div>
+        <div class="table-wrap"><table class="leaderboard-table"><thead id="leaderboard-head-row"><tr><th>Rank</th><th>Team</th><th>Free 5v5</th><th>Paid 5v5</th><th>Juara 1</th><th>Total</th></tr></thead><tbody id="leaderboard-body"></tbody></table></div>
       </section>
-      <section id="bracket-section" class="card hidden">
+      <section id="bracket-section" class="card hidden dashboard-section-panel">
         <div class="section-title"><i class="ri-organization-chart"></i> Tournament Bracket</div>
         <div id="tournament-bracket-view"><div class="empty-state">Pilih tournament untuk melihat bracket.</div></div>
       </section>
-      <section id="profile-section" class="card hidden">
+      <section id="profile-section" class="card hidden dashboard-section-panel">
         <div class="section-title"><i class="ri-user-settings-line"></i> Edit Profile</div>
         <div class="profile-note">Yang bisa diedit hanya nomor HP/WhatsApp dan password. Username, email, nama team/user, dan data tournament dikunci agar data bracket tidak rusak.</div>
         <form id="profile-form" class="form-grid profile-form">
@@ -57,5 +78,24 @@
   <div id="team-join-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join Team 5v5</h2><button class="close-btn" onclick="closeModal('team-join-modal')">&times;</button></div><p id="teamJoinHint">Pilih player yang join.</p><div id="teamJoinPlayers" class="check-list"></div><button class="btn success" style="margin-top:14px;width:100%" onclick="confirmTeamRegistration()">Confirm Team Lineup</button></div></div>
   <div id="brawl-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join 1 vs 1 Brawl</h2><button class="close-btn" onclick="closeModal('brawl-modal')">&times;</button></div><p>Pilih satu player untuk masuk bracket.</p><select id="brawlPlayer"></select><button class="btn brawl" style="margin-top:14px;width:100%" onclick="confirmBrawlRegistration()">Confirm Player</button></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/dashboard.js"></script>
+
+
+
+
+<div class="hiro-watermark">
+    <div class="hiro-watermark-glow"></div>
+    <a href="https://www.instagram.com/hiro.esc/" target="_blank">
+        
+        <span class="hiro-name"></span>
+    </a>
+</div>
+
+<div class="hiro-signature" aria-label="Developer Instagram">
+  <a href="https://www.instagram.com/hiro.esc/" target="_blank" rel="noopener noreferrer">
+    <span class="hiro-dot" aria-hidden="true"></span>
+    <span class="hiro-text">hiro.esc</span>
+  </a>
+</div>
+
 </body>
 </html>

@@ -1,22 +1,39 @@
 {
   "rules": {
     ".read": "auth != null",
+
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')",
+        ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
+      }
+    },
+
     "teams": {
       "$teamId": {
         ".read": "auth != null",
-        ".write": "auth != null && (data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')"
+        ".write": "auth != null && (auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2' || data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid)",
+        ".validate": "newData.hasChildren(['uid','username','email','accountType'])"
       }
     },
+
     "users": {
       "$userId": {
         ".read": "auth != null",
-        ".write": "auth != null && (data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')"
+        ".write": "auth != null && (auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2' || data.child('uid').val() === auth.uid || newData.child('uid').val() === auth.uid)",
+        ".validate": "newData.hasChildren(['uid','username','email','accountType'])"
       }
     },
+
     "tournaments": {
       ".read": "auth != null",
       "$tournamentId": {
-        ".write": "auth != null"
+        ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'",
+        "participants": {
+          "$participantId": {
+            ".write": "auth != null && (auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2' || root.child('teams').child($participantId).child('uid').val() === auth.uid || root.child('users').child($participantId).child('uid').val() === auth.uid)"
+          }
+        }
       }
     }
   }

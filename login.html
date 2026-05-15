@@ -6,6 +6,13 @@
   <title>Login - Icikiwir Esports</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/watermark.css" />
+  <link rel="stylesheet" href="assets/css/register-agreement.css" />
+  <link rel="stylesheet" href="assets/css/register-info-popups.css" />
+  <link rel="stylesheet" href="assets/css/register-agreement-gate.css" />
+<script defer src="assets/js/core/page-transitions.js"></script>
+
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
 </head>
 <body class="elite-page elite-login-page cinematic-auth-page">
   <main class="cinematic-auth-shell">
@@ -37,7 +44,7 @@
         <button type="submit" class="cinematic-submit-btn">Masuk</button>
         <button type="button" class="cinematic-link-btn auth-forgot">Lupa password?</button>
 
-        <p class="cinematic-switch">Belum punya akun? <button id="to-register-btn" class="cinematic-link-btn cinematic-accent">Daftar</button></p>
+        <p class="cinematic-switch">Belum punya akun? <button type="button" id="to-register-btn" class="cinematic-link-btn cinematic-accent">Daftar</button></p>
       </form>
 
       <form id="register-form" class="cinematic-form hidden">
@@ -51,12 +58,21 @@
 
         <label class="cinematic-field"><i class="ri-at-line"></i><input type="text" id="regUsername" placeholder="Username" required></label>
         <label class="cinematic-field"><i class="ri-team-line"></i><input type="text" id="regTeamName" placeholder="Team / Player name" required></label>
-        <label class="cinematic-field"><i class="ri-whatsapp-line"></i><input type="tel" id="regWhatsapp" placeholder="WhatsApp" required></label>
-        <label class="cinematic-field"><i class="ri-mail-line"></i><input type="email" id="regEmail" placeholder="Email" required></label>
+
+        <label class="cinematic-field"><i class="ri-whatsapp-line"></i><input type="tel" id="regWhatsapp" placeholder="Nomor WhatsApp aktif, contoh: 08123456789" required></label>
+        <p class="field-help"><i class="ri-information-line"></i> Nomor HP/WhatsApp dipakai untuk koordinasi match: bikin room, atur jadwal, konfirmasi hasil, dan memudahkan admin input score dari info kedua team/player.</p>
+
+        <label class="cinematic-field"><i class="ri-mail-line"></i><input type="email" id="regEmail" placeholder="Email tournament: nickname@icikiwir.digital" required></label>
+        <p class="field-help"><i class="ri-shield-check-line"></i> Wajib pakai email turnamen <b>@icikiwir.digital</b>, bukan Gmail pribadi, agar tidak ada salah paham seolah website meminta/menyimpan email asli player.</p>
+
+        <div class="register-info-box" aria-label="Info pendaftaran Icikiwir">
+          <div><strong>Kenapa harus @icikiwir.digital?</strong><span>Ini hanya identitas akun turnamen Icikiwir, bukan email pribadi. Tujuannya menjaga trust dan menghindari tuduhan phishing/nyuri email.</span></div>
+          <div><strong>Kenapa butuh nomor WA?</strong><span>Biar player/team bisa saling kontak untuk room, jadwal match, dan validasi hasil. Admin cukup input score dari laporan kedua pihak.</span></div>
+        </div>
         <label class="cinematic-field"><i class="ri-lock-password-line"></i><input type="password" id="regPassword" placeholder="Password" required></label>
 
         <button type="submit" class="cinematic-submit-btn">Buat akun</button>
-        <p class="cinematic-switch">Sudah punya akun? <button id="to-login-btn" class="cinematic-link-btn cinematic-accent">Masuk</button></p>
+        <p class="cinematic-switch">Sudah punya akun? <button type="button" id="to-login-btn" class="cinematic-link-btn cinematic-accent">Masuk</button></p>
       </form>
     </section>
   </main>
@@ -79,12 +95,112 @@
     const subtitle = document.getElementById('auth-card-subtitle');
     document.getElementById('to-register-btn')?.addEventListener('click', () => {
       title.textContent = 'Bikin akun';
-      subtitle.textContent = 'Isi data singkat, langsung masuk lobby.';
+      subtitle.textContent = 'Pakai email @icikiwir.digital + WA aktif untuk koordinasi match.';
     });
     document.getElementById('to-login-btn')?.addEventListener('click', () => {
       title.textContent = 'Siap tanding?';
       subtitle.textContent = 'Masuk dulu, lanjut ke lobby.';
     });
   </script>
+
+
+
+
+<div class="hiro-watermark">
+    <div class="hiro-watermark-glow"></div>
+    <a href="https://www.instagram.com/hiro.esc/" target="_blank">
+        
+        <span class="hiro-name"></span>
+    </a>
+</div>
+
+<div class="hiro-signature" aria-label="Developer Instagram">
+  <a href="https://www.instagram.com/hiro.esc/" target="_blank" rel="noopener noreferrer">
+    <span class="hiro-dot" aria-hidden="true"></span>
+    <span class="hiro-text">hiro.esc</span>
+  </a>
+</div>
+
+<div class="field-info-modal" id="fieldInfoModal" aria-hidden="true">
+  <div class="field-info-backdrop" data-close-field-info></div>
+  <div class="field-info-card" role="dialog" aria-modal="true" aria-labelledby="fieldInfoTitle">
+    <button class="field-info-close" type="button" data-close-field-info aria-label="Tutup">×</button>
+    <div class="field-info-icon">!</div>
+    <h3 id="fieldInfoTitle">Info</h3>
+    <p id="fieldInfoText"></p>
+  </div>
+</div>
+
+<section class="icw-agreement-gate" id="icwAgreementGate" aria-hidden="true">
+  <div class="icw-agreement-backdrop" data-icw-agreement-close></div>
+
+  <div class="icw-agreement-panel" role="dialog" aria-modal="true" aria-labelledby="icwAgreementTitle">
+    <button class="icw-agreement-close" type="button" data-icw-agreement-close aria-label="Tutup agreement">×</button>
+
+    <div class="icw-agreement-head">
+      <span class="icw-agreement-kicker">Verifikasi Pendaftaran</span>
+      <h2 id="icwAgreementTitle">Agreement sebelum daftar</h2>
+      <p>
+        Sebelum lanjut ke form pendaftaran, baca dulu aturan singkat ini agar proses turnamen lebih aman,
+        jelas, dan tidak menimbulkan salah paham antar player maupun admin.
+      </p>
+    </div>
+
+    <div class="icw-agreement-body">
+      <article class="icw-agreement-item">
+        <div class="icw-agreement-number">01</div>
+        <div>
+          <h3>Wajib pakai email turnamen</h3>
+          <p>
+            Peserta wajib memakai email dengan domain <b>@icikiwir.digital</b>, bukan Gmail/Yahoo/email pribadi.
+            Contoh: <b>shim1zu@icikiwir.digital</b> atau <b>namateam@icikiwir.digital</b>.
+            Tujuannya agar tidak ada salah paham seolah website meminta, mencuri, atau menyimpan email asli player.
+            Email ini hanya dipakai sebagai identitas akun di sistem turnamen Icikiwir.
+          </p>
+        </div>
+      </article>
+
+      <article class="icw-agreement-item">
+        <div class="icw-agreement-number">02</div>
+        <div>
+          <h3>Nomor HP/WhatsApp untuk koordinasi match</h3>
+          <p>
+            Nomor HP/WhatsApp dipakai untuk koordinasi pertandingan, seperti membuat room, mengatur jadwal,
+            konfirmasi hasil match, dan memudahkan player/team lawan saling berkabar.
+          </p>
+        </div>
+      </article>
+
+      <article class="icw-agreement-item">
+        <div class="icw-agreement-number">03</div>
+        <div>
+          <h3>Admin hanya validasi dan input score</h3>
+          <p>
+            Setelah match selesai, admin cukup menerima info dari kedua team/player lalu menginput score
+            menang/kalah. Dengan begitu proses turnamen lebih cepat, rapi, dan minim perdebatan.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <label class="icw-agreement-check">
+      <input type="checkbox" id="icwAgreementCheckbox">
+      <span>
+        Saya sudah membaca dan setuju menggunakan email <b>@icikiwir.digital</b> serta nomor WhatsApp
+        untuk kebutuhan koordinasi turnamen.
+      </span>
+    </label>
+
+    <div class="icw-agreement-actions">
+      <button type="button" class="icw-agreement-btn secondary" data-icw-agreement-close>Kembali</button>
+      <button type="button" class="icw-agreement-btn primary" id="icwAgreementVerify" disabled>Verifikasi</button>
+    </div>
+  </div>
+</section>
+
+  <script src="assets/js/register-agreement.js"></script>
+  <script src="assets/js/register-info-popups.js"></script>
+  <script src="assets/js/register-agreement-gate.js"></script>
+
 </body>
 </html>

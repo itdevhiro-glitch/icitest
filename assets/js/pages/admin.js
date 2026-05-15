@@ -9,7 +9,7 @@ const refs = [];
 function listen(path, callback) { const ref = database.ref(path); ref.on('value', callback); refs.push(ref); }
 function cleanup() { refs.splice(0).forEach(ref => ref.off()); }
 window.showSection = function(section) { ['admin-dashboard-section','admin-teams-section','tournament-control-section'].forEach(id => $(`#${id}`).classList.add('hidden')); if (section === 'control') $('#tournament-control-section').classList.remove('hidden'); else $(`#admin-${section}-section`)?.classList.remove('hidden'); };
-window.handleLogout = async function(){ cleanup(); await auth.signOut(); window.location.href='login.html'; };
+window.handleLogout = async function(){ cleanup(); await auth.signOut(); window.smoothNavigate ? window.smoothNavigate('login.html') : (window.location.href='login.html'); };
 window.copyWA = async function(value=''){
   if(!value) return toast('Nomor WA kosong.','danger');
   try{ await navigator.clipboard.writeText(value); toast(`Nomor WA ${value} dicopy.`, 'success'); }
@@ -19,7 +19,7 @@ function waButtons(wa=''){
   return wa ? `<button class="btn small ghost" onclick="copyWA('${wa}')"><i class="ri-file-copy-line"></i> Copy WA</button><a class="btn small success" target="_blank" href="https://wa.me/${wa}"><i class="ri-whatsapp-line"></i> Chat</a>` : '';
 }
 
-auth.onAuthStateChanged(user => { if (!user) return (window.location.href='login.html'); if (user.uid !== ADMIN_UID) { alert('ACCESS DENIED'); return (window.location.href='dashboard.html'); } listen('tournaments', snap => renderTournamentList(snap.val() || {})); listen('teams', snap => renderTeamStats(snap.val() || {})); });
+auth.onAuthStateChanged(user => { if (!user) return (window.smoothNavigate ? window.smoothNavigate('login.html') : (window.location.href='login.html')); if (user.uid !== ADMIN_UID) { alert('ACCESS DENIED'); return (window.smoothNavigate ? window.smoothNavigate('dashboard.html') : (window.location.href='dashboard.html')); } listen('tournaments', snap => renderTournamentList(snap.val() || {})); listen('teams', snap => renderTeamStats(snap.val() || {})); });
 
 $('#create-tournament-form').addEventListener('submit', async event => {
   event.preventDefault();
