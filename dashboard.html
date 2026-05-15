@@ -8,8 +8,7 @@
   <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/watermark.css" />
 <script defer src="assets/js/core/page-transitions.js"></script>
-
-<link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
 </head>
 <body class="dashboard-page pro-v10">
   <div class="app-layout v10-dashboard-layout">
@@ -74,7 +73,49 @@
     </main>
   </div>
   <div id="rules-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Tournament Rules</h2><button class="close-btn" onclick="closeModal('rules-modal')">&times;</button></div><div id="rules-content" class="rule-book"></div></div></div>
-  <div id="payment-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Registration Payment</h2><button class="close-btn" onclick="closeModal('payment-modal')">&times;</button></div><p>Transfer via Saweria / Trakteer, screenshot bukti pembayaran, lalu kirim ke Discord admin.</p><h1 id="payment-fee-display">Rp 0</h1><div class="form-grid"><a href="https://saweria.co/icikiwir" target="_blank" class="btn warning">Saweria</a><a href="https://trakteer.id/icikiwir" target="_blank" class="btn danger">Trakteer</a><a href="https://discord.gg/icikiwir" target="_blank" class="btn ghost">Discord</a><button class="btn success" onclick="confirmPayment()">I have paid</button></div></div></div>
+  <div id="payment-modal" class="modal-overlay hidden">
+    <div class="modal-content payment-modal-content">
+      <div class="modal-header">
+        <h2>Registration Payment</h2>
+        <button class="close-btn" onclick="closeModal('payment-modal')">&times;</button>
+      </div>
+
+      <p class="payment-note">
+        Saweria sementara belum tersedia dan sedang <strong>Under Maintenance</strong>.
+        Gunakan metode pembayaran lain di bawah ini.
+      </p>
+
+      <h1 id="payment-fee-display">Rp 0</h1>
+
+      <div class="form-grid payment-grid">
+        <button type="button" class="btn payment-disabled" disabled>
+          SAWERIA <span>UNDER MAINTENANCE</span>
+        </button>
+
+        <a href="https://trakteer.id/icikiwirfamily" target="_blank" class="btn danger">
+          TRAKTEER
+        </a>
+
+        <div class="payment-info-box">
+          <strong>GOPAY & DANA</strong>
+          <span>A.N Gopay = kenzyro</span>
+          <span>A.N Dana = elkenyot</span>
+          <b>081386906020</b>
+        </div>
+
+        <a href="https://discord.gg/rpeybkaXkF" target="_blank" class="btn ghost">
+          DISCORD
+        </a>
+
+        <p class="payment-proof-note">
+          Jika sudah bayar, kirim screenshot bukti pembayaran ke Discord pada room
+          <strong>#📊〢income-dan-outcome</strong>.
+        </p>
+
+        <button class="btn success" onclick="confirmPayment()">I HAVE PAID</button>
+      </div>
+    </div>
+  </div></div>
   <div id="team-join-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join Team 5v5</h2><button class="close-btn" onclick="closeModal('team-join-modal')">&times;</button></div><p id="teamJoinHint">Pilih player yang join.</p><div id="teamJoinPlayers" class="check-list"></div><button class="btn success" style="margin-top:14px;width:100%" onclick="confirmTeamRegistration()">Confirm Team Lineup</button></div></div>
   <div id="brawl-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join 1 vs 1 Brawl</h2><button class="close-btn" onclick="closeModal('brawl-modal')">&times;</button></div><p>Pilih satu player untuk masuk bracket.</p><select id="brawlPlayer"></select><button class="btn brawl" style="margin-top:14px;width:100%" onclick="confirmBrawlRegistration()">Confirm Player</button></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/dashboard.js"></script>
