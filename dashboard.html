@@ -74,48 +74,66 @@
   </div>
   <div id="rules-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Tournament Rules</h2><button class="close-btn" onclick="closeModal('rules-modal')">&times;</button></div><div id="rules-content" class="rule-book"></div></div></div>
   <div id="payment-modal" class="modal-overlay hidden">
-    <div class="modal-content payment-modal-content">
-      <div class="modal-header">
-        <h2>Registration Payment</h2>
-        <button class="close-btn" onclick="closeModal('payment-modal')">&times;</button>
-      </div>
+  <div class="modal-content payment-modal-content">
+    <div class="modal-header">
+      <h2>Registration Payment</h2>
+      <button class="close-btn" onclick="closeModal('payment-modal')">&times;</button>
+    </div>
 
-      <p class="payment-note">
-        Saweria sementara belum tersedia dan sedang <strong>Under Maintenance</strong>.
-        Gunakan metode pembayaran lain di bawah ini.
+    <div class="payment-alert">
+      <i class="ri-information-line"></i>
+      <p>
+        Saweria sedang <strong>under maintenance</strong>. Gunakan metode pembayaran aktif di bawah ini.
       </p>
+    </div>
 
-      <h1 id="payment-fee-display">Rp 0</h1>
+    <h1 id="payment-fee-display">Rp 0</h1>
 
-      <div class="form-grid payment-grid">
-        <button type="button" class="btn payment-disabled" disabled>
-          SAWERIA <span>UNDER MAINTENANCE</span>
-        </button>
+    <div class="payment-methods-pro">
+      <button type="button" class="payment-option disabled" disabled>
+        <span class="payment-icon"><i class="ri-tools-line"></i></span>
+        <span class="payment-copy">
+          <b>Saweria</b>
+          <small>Under Maintenance</small>
+        </span>
+      </button>
 
-        <a href="https://trakteer.id/icikiwirfamily" target="_blank" class="btn danger">
-          TRAKTEER
-        </a>
+      <a href="https://trakteer.id/icikiwirfamily" target="_blank" class="payment-option trakteer">
+        <span class="payment-icon"><i class="ri-cup-line"></i></span>
+        <span class="payment-copy">
+          <b>Trakteer</b>
+          <small>trakteer.id/icikiwirfamily</small>
+        </span>
+      </a>
 
-        <div class="payment-info-box">
-          <strong>GOPAY & DANA</strong>
-          <span>A.N Gopay = kenzyro</span>
-          <span>A.N Dana = elkenyot</span>
-          <b>081386906020</b>
-        </div>
-
-        <a href="https://discord.gg/rpeybkaXkF" target="_blank" class="btn ghost">
-          DISCORD
-        </a>
-
-        <p class="payment-proof-note">
-          Jika sudah bayar, kirim screenshot bukti pembayaran ke Discord pada room
-          <strong>#📊〢income-dan-outcome</strong>.
-        </p>
-
-        <button class="btn success" onclick="confirmPayment()">I HAVE PAID</button>
+      <div class="payment-option wallet">
+        <span class="payment-icon"><i class="ri-wallet-3-line"></i></span>
+        <span class="payment-copy">
+          <b>Gopay &amp; Dana</b>
+          <small><strong>A.N Gopay:</strong> kenzyro</small>
+          <small><strong>A.N Dana:</strong> elkenyot</small>
+          <small class="payment-number">081386906020</small>
+        </span>
       </div>
     </div>
-  </div></div>
+
+    <div class="payment-proof-box">
+      <i class="ri-discord-line"></i>
+      <div>
+        <b>Kirim bukti pembayaran</b>
+        <p>
+          Setelah bayar, upload screenshot bukti pembayaran ke Discord pada room
+          <strong>#📊〢income-dan-outcome</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="payment-actions">
+      <a href="https://discord.gg/rpeybkaXkF" target="_blank" class="btn ghost">Buka Discord</a>
+      <button class="btn success" onclick="confirmPayment()">I HAVE PAID</button>
+    </div>
+  </div>
+</div></div>
   <div id="team-join-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join Team 5v5</h2><button class="close-btn" onclick="closeModal('team-join-modal')">&times;</button></div><p id="teamJoinHint">Pilih player yang join.</p><div id="teamJoinPlayers" class="check-list"></div><button class="btn success" style="margin-top:14px;width:100%" onclick="confirmTeamRegistration()">Confirm Team Lineup</button></div></div>
   <div id="brawl-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join 1 vs 1 Brawl</h2><button class="close-btn" onclick="closeModal('brawl-modal')">&times;</button></div><p>Pilih satu player untuk masuk bracket.</p><select id="brawlPlayer"></select><button class="btn brawl" style="margin-top:14px;width:100%" onclick="confirmBrawlRegistration()">Confirm Player</button></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/dashboard.js"></script>
@@ -133,7 +151,7 @@
 
 <div class="hiro-signature" aria-label="Developer Instagram">
   <a href="https://www.instagram.com/hiro.esc/" target="_blank" rel="noopener noreferrer">
-    <span class="hiro-dot" aria-hidden="true"></span>
+    <img src="assets/img/ppauthor.png" class="hiro-dot" alt="creator">
     <span class="hiro-text">hiro.esc</span>
   </a>
 </div>

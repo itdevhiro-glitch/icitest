@@ -88,7 +88,7 @@
     inset 0 1px 0 rgba(255,255,255,.35);
 }
 
-.hiro-dot::before{content:"";}
+
 
 .hiro-text{
   display:flex;
@@ -141,7 +141,7 @@
     flex-basis:23px;
   }
 
-  .hiro-dot::before{content:"";}
+  
 
   .hiro-text{
     font-size:12px;
@@ -154,14 +154,30 @@
 }
 
 
-/* Correct creator icon replacement: old H badge becomes uploaded ppauthor image */
+/* FINAL FIX: hiro-dot is now the uploaded creator image, not text H */
 .hiro-dot{
-  background-image:url("../img/ppauthor.png") !important;
-  background-size:cover !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
+  width:32px !important;
+  height:32px !important;
+  flex:0 0 32px !important;
+  border-radius:999px !important;
+  object-fit:cover !important;
+  display:block !important;
+  background:none !important;
+  background-image:none !important;
   color:transparent !important;
+  box-shadow:
+    0 0 18px rgba(96,165,250,.45),
+    inset 0 1px 0 rgba(255,255,255,.20) !important;
 }
-.hiro-dot::before{
-  content:"" !important;
+.hiro-dot::before,
+.hiro-dot::after{
+  content:none !important;
+  display:none !important;
+}
+@media(max-width:768px){
+  .hiro-dot{
+    width:28px !important;
+    height:28px !important;
+    flex-basis:28px !important;
+  }
 }
