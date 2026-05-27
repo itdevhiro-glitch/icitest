@@ -13,15 +13,42 @@ const TEAM_MIN_PLAYERS = 5;
 const TEAM_MAX_PLAYERS = 10;
 const refs = [];
 
-function normalizePlayers(players) {
-  if (Array.isArray(players)) return players.filter(Boolean);
-  if (players && typeof players === 'object') {
-    return Object.keys(players)
-      .sort((a, b) => Number(a) - Number(b))
-      .map(key => players[key])
-      .filter(Boolean);
+function normalizePlayerRecord(value, fallbackIndex = 0) {
+  if (!value) return null;
+  if (typeof value === 'string') {
+    const name = value.trim();
+    return name ? { name, nickname: name, nickName: name, role: 'Player', id: '' } : null;
   }
-  return [];
+  if (typeof value !== 'object') return null;
+  const name = value.name || value.nickname || value.nickName || value.nick || value.playerName || value.username || value.displayName || value.ign || value.inGameName || `Player ${fallbackIndex + 1}`;
+  const id = value.id || value.gameId || value.accountId || value.accountID || value.playerId || value.playerID || value.uid || value.userId || value.userID || '';
+  const role = value.role || value.position || value.lane || value.job || 'Player';
+  return { ...value, name, nickname: value.nickname || value.nickName || value.nick || name, role, id };
+}
+function normalizePlayers(players) {
+  if (!players) return [];
+  const raw = Array.isArray(players)
+    ? players
+    : Object.keys(players || {}).sort((a, b) => {
+        const na = Number(a), nb = Number(b);
+        if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+        return String(a).localeCompare(String(b));
+      }).map(key => players[key]);
+  return raw.map((player, index) => normalizePlayerRecord(player, index)).filter(Boolean);
+}
+function collectTeamPlayers(team = {}) {
+  const buckets = [
+    team.players, team.roster, team.members, team.member, team.teamMembers,
+    team.playerList, team.lineup, team.lineUp, team.registeredPlayers,
+    team.teamPlayers, team.accounts, team.accountIds, team.accountID, team.accountId
+  ];
+  const seen = new Set();
+  const result = [];
+  buckets.forEach(bucket => normalizePlayers(bucket).forEach(player => {
+    const key = String(player.id || player.gameId || player.accountId || player.name || player.nickname || JSON.stringify(player)).toLowerCase();
+    if (!seen.has(key)) { seen.add(key); result.push(player); }
+  }));
+  return result;
 }
 function normalizeLineupMax(value) {
   const raw = Number(value);
@@ -285,7 +312,7 @@ function renderTeamStats(teams){
   const list=Object.values(teams).sort((a,b)=>String(a.teamName||a.username).localeCompare(String(b.teamName||b.username)));
   const limited=list.slice(0,120);
   c.innerHTML=limited.map(t=>{
-    const rosterCount=Array.isArray(t.players)?t.players.length:0;
+    const rosterCount=collectTeamPlayers(t).length;
     return `<article class="stat-card team-card lite-team-card"><div class="team-card-head"><div><h3>${escapeHtml(t.teamName||t.username||'Team')}</h3><small>@${escapeHtml(t.username||'-')} • ${rosterCount}/${Number(t.maxRoster||10)} player • WA ${escapeHtml(t.whatsapp||'-')}</small></div><span class="team-status ${t.isApproved?'ok':'wait'}">${t.isApproved?'Verified':'Pending'}</span></div><div class="row-actions" style="margin-top:10px"><button class="btn small" onclick="openTeamDetail('${t.username}')"><i class="ri-eye-line"></i> Detail/Edit</button><button class="btn small ${t.isApproved?'success':'warning'}" onclick="toggleApprove('${t.username}', ${!t.isApproved})">${t.isApproved?'Verified':'Approve'}</button><button class="btn small danger" onclick="toggleBan('${t.username}', ${!t.isBanned})">${t.isBanned?'Unban':'Ban'}</button>${t.whatsapp?`<a class="btn small ghost" target="_blank" href="https://wa.me/${t.whatsapp}">WA</a>`:''}</div></article>`;
   }).join('') || '<div class="empty-state">No teams.</div>';
   if(list.length>120) c.innerHTML += `<div class="empty-state">Menampilkan 120 team pertama dari ${list.length} data. Buka detail untuk edit statistik biar halaman tidak berat.</div>`;
@@ -488,7 +515,7 @@ window.viewFormResponses=async function(id){
 window.closeFormPreview=function(){ $('#form-preview-modal').classList.add('hidden'); };
 window.openTeamDetail=function(username){
   const t=cachedTeams[username]; if(!t) return toast('Team tidak ditemukan.', 'danger');
-  const players=Array.isArray(t.players)?t.players:[];
+  const players=collectTeamPlayers(t);
   const s=t.stats||{};
   $('#team-detail-title').textContent=t.teamName||username;
   $('#team-detail-body').innerHTML=`<div class="detail-grid"><article><small>Username</small><b>@${escapeHtml(t.username||username)}</b></article><article><small>WhatsApp</small><b>${escapeHtml(t.whatsapp||'-')}</b></article><article><small>Status</small><b>${t.isApproved?'Verified':'Pending'}${t.isBanned?' / Banned':''}</b></article><article><small>Roster Max</small><input class="mini-input" type="number" min="1" max="10" value="${Number(t.maxRoster||10)}" onchange="updateMaxRoster('${username}',this.value)"></article></div><div class="section-title" style="margin-top:18px"><i class="ri-bar-chart-box-line"></i> Statistik Team</div>${statGroup(username,'Free',[['ch1','1st'],['ch2','2nd'],['ch3','3rd']],s)}${statGroup(username,'Paid',[['paidCh1','1st'],['paidCh2','2nd'],['paidCh3','3rd']],s)}${statGroup(username,'1v1 Brawl',[['brawlCh1','1st'],['brawlCh2','2nd'],['brawlCh3','3rd']],s)}<div class="section-title" style="margin-top:18px"><i class="ri-team-line"></i> Player Roster & Account ID</div><div class="player-detail-list">${players.map((p,i)=>`<div class="player-detail-row"><span>#${i+1}</span><div><b>${escapeHtml(p.name||'Unnamed Player')}</b><small>Role: ${escapeHtml(p.role||'-')} • ID Akun/Game: ${escapeHtml(p.id||p.gameId||p.accountId||'-')}</small></div></div>`).join('') || '<div class="empty-state">Roster player belum diisi.</div>'}</div>`;

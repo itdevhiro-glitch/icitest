@@ -16,17 +16,44 @@ const TEAM_MIN_PLAYERS = 5;
 const TEAM_MAX_PLAYERS = 10;
 const refs = [];
 
-function normalizePlayers(players) {
-  if (Array.isArray(players)) return players.filter(Boolean);
-  if (players && typeof players === 'object') {
-    return Object.keys(players)
-      .sort((a, b) => Number(a) - Number(b))
-      .map(key => players[key])
-      .filter(Boolean);
+function normalizePlayerRecord(value, fallbackIndex = 0) {
+  if (!value) return null;
+  if (typeof value === 'string') {
+    const name = value.trim();
+    return name ? { name, nickname: name, nickName: name, role: 'Player', id: '' } : null;
   }
-  return [];
+  if (typeof value !== 'object') return null;
+  const name = value.name || value.nickname || value.nickName || value.nick || value.playerName || value.username || value.displayName || value.ign || value.inGameName || `Player ${fallbackIndex + 1}`;
+  const id = value.id || value.gameId || value.accountId || value.accountID || value.playerId || value.playerID || value.uid || value.userId || value.userID || '';
+  const role = value.role || value.position || value.lane || value.job || 'Player';
+  return { ...value, name, nickname: value.nickname || value.nickName || value.nick || name, role, id };
 }
-function getTeamPlayers() { return normalizePlayers(currentData?.players); }
+function normalizePlayers(players) {
+  if (!players) return [];
+  const raw = Array.isArray(players)
+    ? players
+    : Object.keys(players || {}).sort((a, b) => {
+        const na = Number(a), nb = Number(b);
+        if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+        return String(a).localeCompare(String(b));
+      }).map(key => players[key]);
+  return raw.map((player, index) => normalizePlayerRecord(player, index)).filter(Boolean);
+}
+function collectTeamPlayers(team = {}) {
+  const buckets = [
+    team.players, team.roster, team.members, team.member, team.teamMembers,
+    team.playerList, team.lineup, team.lineUp, team.registeredPlayers,
+    team.teamPlayers, team.accounts, team.accountIds, team.accountID, team.accountId
+  ];
+  const seen = new Set();
+  const result = [];
+  buckets.forEach(bucket => normalizePlayers(bucket).forEach(player => {
+    const key = String(player.id || player.gameId || player.accountId || player.name || player.nickname || JSON.stringify(player)).toLowerCase();
+    if (!seen.has(key)) { seen.add(key); result.push(player); }
+  }));
+  return result;
+}
+function getTeamPlayers() { return collectTeamPlayers(currentData || {}); }
 function normalizeLineupMax(value) {
   const raw = Number(value);
   const max = Number.isFinite(raw) && raw > 0 ? raw : TEAM_MIN_PLAYERS;
@@ -146,7 +173,7 @@ $('#add-player-form').addEventListener('submit', async event => {
   await database.ref(`teams/${currentKey}/players`).set(players);
   event.target.reset(); toast('Player ditambahkan.', 'success');
 });
-window.removePlayer = async function(teamKey, index) { if (!confirm('Remove player?')) return; const snap = await database.ref(`teams/${teamKey}/players`).once('value'); const players = snap.val() || []; players.splice(index, 1); await database.ref(`teams/${teamKey}/players`).set(players); toast('Player dihapus.', 'success'); };
+window.removePlayer = async function(teamKey, index) { if (!confirm('Remove player?')) return; const snap = await database.ref(`teams/${teamKey}/players`).once('value'); const players = normalizePlayers(snap.val()); players.splice(index, 1); await database.ref(`teams/${teamKey}/players`).set(players); toast('Player dihapus.', 'success'); };
 
 
 const CARD_THEMES = {
