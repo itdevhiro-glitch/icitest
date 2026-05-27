@@ -1,14 +1,12 @@
 {
   "rules": {
     ".read": "auth != null",
-
     "admins": {
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2')",
         ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
       }
     },
-
     "teams": {
       "$teamId": {
         ".read": "auth != null",
@@ -16,7 +14,6 @@
         ".validate": "newData.hasChildren(['uid','username','email','accountType'])"
       }
     },
-
     "users": {
       "$userId": {
         ".read": "auth != null",
@@ -24,7 +21,6 @@
         ".validate": "newData.hasChildren(['uid','username','email','accountType'])"
       }
     },
-
     "tournaments": {
       ".read": "auth != null",
       "$tournamentId": {
@@ -33,6 +29,20 @@
           "$participantId": {
             ".write": "auth != null && (auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2' || root.child('teams').child($participantId).child('uid').val() === auth.uid || root.child('users').child($participantId).child('uid').val() === auth.uid)"
           }
+        }
+      }
+    },
+    "forms": {
+      ".read": true,
+      "$formId": {
+        ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
+      }
+    },
+    "formResponses": {
+      "$formId": {
+        ".read": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'",
+        "$responseId": {
+          ".write": true
         }
       }
     }

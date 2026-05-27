@@ -2344,3 +2344,51 @@ body.dashboard-page.pro-v10::after{opacity:.28!important;mask-image:linear-gradi
     align-items:flex-start;
   }
 }
+
+
+/* Admin complex dashboard upgrade: form builder + team detail */
+.form-field-builder{display:grid;gap:12px;padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}
+.builder-preview{display:grid;gap:10px}.builder-field{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.045)}.builder-field small,.muted-text{display:block;color:var(--muted);margin-top:4px}.wide-modal{width:min(860px,100%)!important}.team-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.team-status{padding:6px 9px;border-radius:999px;font-size:.72rem;font-weight:900;border:1px solid var(--line)}.team-status.ok{color:#86efac;background:rgba(34,197,94,.12)}.team-status.wait{color:#fde68a;background:rgba(245,158,11,.12)}.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.detail-grid article{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045)}.detail-grid small{display:block;color:var(--muted);font-weight:800;text-transform:uppercase;font-size:.72rem;margin-bottom:6px}.player-detail-list{display:grid;gap:10px}.player-detail-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.045)}.player-detail-row>span{width:34px;height:34px;border-radius:12px;background:var(--grad);display:grid;place-items:center;font-weight:900}.player-detail-row small{display:block;color:var(--muted);margin-top:4px}.option-list{display:grid;gap:8px}.danger-text{color:#fecaca}@media(max-width:760px){.detail-grid{grid-template-columns:1fr 1fr}.builder-field{align-items:flex-start}.team-card-head{display:grid}.wide-modal{width:calc(100vw - 28px)!important}}
+
+/* Admin performance patch: reduce repaint-heavy effects on dashboard */
+body:has(.app-layout){
+  background-attachment:scroll!important;
+}
+.app-layout .sidebar,
+.app-layout .card,
+.app-layout .modal-content,
+.app-layout .auth-box,
+.app-layout .auth-hero{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.24)!important;
+}
+.app-layout .btn,
+.app-layout .btn-action,
+.app-layout .nav-btn,
+.app-layout .stat-card,
+.app-layout .mini-tournament,
+.app-layout .match-card,
+.app-layout .participant-row{
+  transition:none!important;
+}
+.app-layout .btn:hover,
+.app-layout .btn-action:hover{
+  transform:none!important;
+}
+.app-layout .mini-tournament,
+.app-layout .participant-row,
+.app-layout .match-card,
+.app-layout .player-card,
+.app-layout .tournament-card{
+  box-shadow:none!important;
+}
+.app-layout .modal-overlay{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.lite-team-card .stat-group{display:none!important;}
+
+/* Google Form style private form builder/public page */
+.gform-builder-card{display:grid;gap:8px;padding:14px 16px;border-left:5px solid #38bdf8;border-radius:16px;background:rgba(255,255,255,.055);border-top:1px solid rgba(255,255,255,.10);border-right:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.10)}
+.gform-builder-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.gform-option-pills{display:flex;gap:6px;flex-wrap:wrap}.gform-option-pills span{font-size:.75rem;padding:6px 9px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(125,211,252,.20);color:#dbeafe}.gform-list-card{border-left:5px solid #8b5cf6!important}.gform-public-preview{display:grid;gap:16px}.gform-header-strip{height:12px;background:linear-gradient(135deg,#7c3aed,#38bdf8);border-radius:22px 22px 0 0;margin:-1px -1px 18px}.gform-header-strip.danger{background:linear-gradient(135deg,#ef4444,#f97316)}.gform-header-strip.success{background:linear-gradient(135deg,#22c55e,#06b6d4)}.gform-question{display:grid;gap:12px;padding:18px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.965);color:#111827}.gform-question span{font-size:1rem;color:#111827}.gform-question input,.gform-question select,.gform-question textarea{background:#fff!important;color:#111827!important;border-color:#d1d5db!important;border-radius:8px!important}.gform-choice-list{display:grid;gap:10px}.gform-choice{display:flex!important;grid-template-columns:none!important;align-items:center;gap:10px;color:#111827!important;background:transparent!important;padding:4px 0!important;border:0!important}.gform-choice input{width:auto!important;accent-color:#7c3aed}.response-card{display:grid;gap:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045);margin-bottom:10px}.response-head{display:flex;justify-content:space-between;gap:12px}.response-head small{color:var(--muted)}.response-answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.response-answers div{padding:10px;border-radius:12px;background:rgba(0,0,0,.18)}.response-answers small{display:block;color:var(--muted);margin-bottom:4px}.public-form-page{background:#f0ebf8!important;color:#111827!important;min-height:100svh}.public-form-shell{width:min(760px,calc(100% - 28px));margin:0 auto;padding:34px 0 60px}.public-form-card{background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(17,24,39,.12);border:1px solid #e5e7eb;overflow:hidden}.public-form-title-block{padding:4px 18px 10px}.public-form-title-block h1{color:#111827;margin:0 0 8px;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.04em}.public-form-title-block p{color:#4b5563;line-height:1.6;white-space:pre-wrap}.public-form-title-block small{color:#6b7280}.public-form-card form{padding:0 18px 22px}.public-form-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.public-form-actions .btn{width:auto}.respondent-box{border-top:6px solid #7c3aed}.form-status-box{display:grid;place-items:center;text-align:center;gap:10px;padding:70px 24px}.form-status-box i{font-size:3rem;color:#7c3aed}.form-status-box h1{margin:0;color:#111827}.form-status-box p{color:#4b5563;margin:0}@media(max-width:640px){.gform-builder-head,.response-head,.public-form-actions{display:grid}.public-form-shell{padding:16px 0 40px}.gform-question{padding:15px}.response-answers{grid-template-columns:1fr}}

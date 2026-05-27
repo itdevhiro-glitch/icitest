@@ -14,7 +14,7 @@
   <div class="app-layout">
     <aside class="sidebar">
       <div class="logo-area"><div class="logo-icon"><i class="ri-admin-line"></i></div><div class="brand-name">Admin<span class="brand-sub">Control Center</span></div></div>
-      <nav class="nav"><button class="nav-btn active" onclick="showSection('dashboard')"><i class="ri-dashboard-line"></i><span>Dashboard</span></button><button class="nav-btn" onclick="showSection('teams')"><i class="ri-group-line"></i><span>Teams</span></button><button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button></nav>
+      <nav class="nav"><button class="nav-btn active" onclick="showSection('dashboard')"><i class="ri-dashboard-line"></i><span>Dashboard</span></button><button class="nav-btn" onclick="showSection('forms')"><i class="ri-survey-line"></i><span>Forms</span></button><button class="nav-btn" onclick="showSection('teams')"><i class="ri-group-line"></i><span>Teams</span></button><button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button></nav>
     </aside>
     <main class="app-content">
       <div class="topbar"><div><h1>Tournament Admin</h1><p>Create event, approve payment, manage bracket, dan update leaderboard.</p></div></div>
@@ -33,6 +33,46 @@
         </div>
         <div class="card"><div class="section-title"><i class="ri-list-check"></i> Tournament List</div><div id="tournament-list-container" class="roster-list"><div class="empty-state">Loading...</div></div></div>
       </section>
+
+      <section id="admin-forms-section" class="dashboard-grid hidden">
+        <div class="card">
+          <div class="section-title"><i class="ri-survey-line"></i> Form Builder</div>
+          <form id="admin-form-builder" class="form-grid">
+            <input id="formTitle" placeholder="Judul form, contoh: Recruitment Player" required>
+            <textarea id="formDescription" rows="3" placeholder="Deskripsi form / instruksi pengisian"></textarea>
+            <div class="form-row">
+              <select id="formStatus"><option value="open">Open</option><option value="closed">Closed</option></select>
+              <select id="formTarget"><option value="all">Semua akun</option><option value="team">Team only</option><option value="user">Solo/User only</option></select>
+            </div>
+            <div class="form-field-builder">
+              <div class="section-title"><i class="ri-input-field"></i> Tambah Pertanyaan</div>
+              <input id="fieldLabel" placeholder="Pertanyaan, contoh: Nama lengkap player">
+              <div class="form-row">
+                <select id="fieldType">
+                  <option value="text">Short Text</option>
+                  <option value="textarea">Paragraph</option>
+                  <option value="number">Number</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone/WhatsApp</option>
+                  <option value="select">Dropdown</option>
+                  <option value="radio">Multiple Choice</option>
+                  <option value="checkbox">Checkbox</option>
+                  <option value="date">Date</option>
+                </select>
+                <select id="fieldRequired"><option value="true">Required</option><option value="false">Optional</option></select>
+              </div>
+              <textarea id="fieldOptions" rows="4" placeholder="Tulis opsi satu per baris / pisahkan koma" disabled></textarea>
+              <button class="btn ghost" type="button" onclick="addFormField()"><i class="ri-add-line"></i> Add Question</button>
+            </div>
+            <div id="form-fields-preview" class="builder-preview"><div class="empty-state">Belum ada pertanyaan.</div></div>
+            <button class="btn success" type="submit"><i class="ri-save-3-line"></i> Save Form</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="section-title"><i class="ri-file-list-3-line"></i> Form List</div>
+          <div id="admin-forms-list" class="roster-list"><div class="empty-state">Loading forms...</div></div>
+        </div>
+      </section>
       <section id="admin-teams-section" class="card hidden"><div class="section-title"><i class="ri-shield-star-line"></i> Team Manager</div><div id="team-stats-list" class="teams-grid"></div></section>
       <section id="tournament-control-section" class="card hidden">
         <button class="btn ghost small" onclick="showSection('dashboard')"><i class="ri-arrow-left-line"></i> Back</button>
@@ -45,6 +85,9 @@
       </section>
     </main>
   </div>
+
+  <div id="team-detail-modal" class="modal-overlay hidden"><div class="modal-content wide-modal"><div class="modal-header"><h3 id="team-detail-title">Team Detail</h3><button class="close-btn" onclick="closeTeamDetail()">&times;</button></div><div id="team-detail-body"></div></div></div>
+  <div id="form-preview-modal" class="modal-overlay hidden"><div class="modal-content wide-modal"><div class="modal-header"><h3 id="form-preview-title">Form Preview</h3><button class="close-btn" onclick="closeFormPreview()">&times;</button></div><div id="form-preview-body"></div></div></div>
   <div id="score-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h3>Edit Match Score</h3><button class="close-btn" onclick="closeScoreModal()">&times;</button></div><p id="score-modal-match-info"></p><label>Match Format<select id="modalMatchFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></label><div class="score-grid"><div class="score-box"><h4 id="score-team-a-name">Team A</h4><input type="number" id="input-score-a"></div><strong>VS</strong><div class="score-box"><h4 id="score-team-b-name">Team B</h4><input type="number" id="input-score-b"></div></div><div class="modal-actions"><button class="btn ghost" onclick="saveMatchScore(false)">Save Score</button><button class="btn success" onclick="saveMatchScore(true)">Done & Advance</button></div></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/admin.js"></script>
 
