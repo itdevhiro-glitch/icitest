@@ -46,6 +46,16 @@
           <div id="tournament-grid" class="tournament-grid"><div class="empty-state">Loading events...</div></div>
         </div>
       </section>
+      <section id="team-section" class="card hidden dashboard-section-panel team-studio-section">
+        <div class="team-studio-head">
+          <div>
+            <div class="section-title"><i class="ri-id-card-line"></i> Team Dashboard & Player Card</div>
+            <p class="muted-text">Edit role, nickname, ID akun player, pilih tema warna team, lalu download kartu modern per player.</p>
+          </div>
+          <button class="btn ghost" onclick="renderTeamStudio()"><i class="ri-refresh-line"></i> Refresh</button>
+        </div>
+        <div id="team-studio-content" class="team-studio-content"></div>
+      </section>
       <section id="leaderboard-section" class="card hidden dashboard-section-panel leaderboard-card">
         <div class="leaderboard-head">
           <div class="section-title"><i class="ri-bar-chart-line"></i> Leaderboard</div>
@@ -83,38 +93,14 @@
     <div class="payment-alert">
       <i class="ri-information-line"></i>
       <p>
-        Saweria sedang <strong>under maintenance</strong>. Gunakan metode pembayaran aktif di bawah ini.
+        Pilih salah satu metode pembayaran yang tersedia. Metode ini mengikuti setting terbaru dari admin.
       </p>
     </div>
 
     <h1 id="payment-fee-display">Rp 0</h1>
 
-    <div class="payment-methods-pro">
-      <button type="button" class="payment-option disabled" disabled>
-        <span class="payment-icon"><i class="ri-tools-line"></i></span>
-        <span class="payment-copy">
-          <b>Saweria</b>
-          <small>Under Maintenance</small>
-        </span>
-      </button>
-
-      <a href="https://trakteer.id/icikiwirfamily" target="_blank" class="payment-option trakteer">
-        <span class="payment-icon"><i class="ri-cup-line"></i></span>
-        <span class="payment-copy">
-          <b>Trakteer</b>
-          <small>trakteer.id/icikiwirfamily</small>
-        </span>
-      </a>
-
-      <div class="payment-option wallet">
-        <span class="payment-icon"><i class="ri-wallet-3-line"></i></span>
-        <span class="payment-copy">
-          <b>Gopay &amp; Dana</b>
-          <small><strong>A.N Gopay:</strong> kenzyro</small>
-          <small><strong>A.N Dana:</strong> elkenyot</small>
-          <small class="payment-number">081386906020</small>
-        </span>
-      </div>
+    <div id="payment-methods-container" class="payment-methods-pro">
+      <div class="empty-state">Loading payment methods...</div>
     </div>
 
     <div class="payment-proof-box">
@@ -134,7 +120,7 @@
     </div>
   </div>
 </div></div>
-  <div id="team-join-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join Team 5v5</h2><button class="close-btn" onclick="closeModal('team-join-modal')">&times;</button></div><p id="teamJoinHint">Pilih player yang join.</p><div id="teamJoinPlayers" class="check-list"></div><button class="btn success" style="margin-top:14px;width:100%" onclick="confirmTeamRegistration()">Confirm Team Lineup</button></div></div>
+  <div id="team-join-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join Team 5v5</h2><button class="close-btn" onclick="closeModal('team-join-modal')">&times;</button></div><p id="teamJoinHint">Pilih player yang join.</p><div id="teamJoinPlayers" class="check-list"></div><button class="btn success" style="margin-top:14px;width:100%" id="confirmTeamLineupBtn" onclick="confirmTeamRegistration()">Pilih 5 Player</button></div></div>
   <div id="brawl-modal" class="modal-overlay hidden"><div class="modal-content"><div class="modal-header"><h2>Join 1 vs 1 Brawl</h2><button class="close-btn" onclick="closeModal('brawl-modal')">&times;</button></div><p>Pilih satu player untuk masuk bracket.</p><select id="brawlPlayer"></select><button class="btn brawl" style="margin-top:14px;width:100%" onclick="confirmBrawlRegistration()">Confirm Player</button></div></div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script><script type="module" src="assets/js/pages/dashboard.js"></script>
 

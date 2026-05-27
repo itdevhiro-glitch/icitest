@@ -14,7 +14,7 @@
   <div class="app-layout">
     <aside class="sidebar">
       <div class="logo-area"><div class="logo-icon"><i class="ri-admin-line"></i></div><div class="brand-name">Admin<span class="brand-sub">Control Center</span></div></div>
-      <nav class="nav"><button class="nav-btn active" onclick="showSection('dashboard')"><i class="ri-dashboard-line"></i><span>Dashboard</span></button><button class="nav-btn" onclick="showSection('forms')"><i class="ri-survey-line"></i><span>Forms</span></button><button class="nav-btn" onclick="showSection('teams')"><i class="ri-group-line"></i><span>Teams</span></button><button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button></nav>
+      <nav class="nav"><button class="nav-btn active" onclick="showSection('dashboard')"><i class="ri-dashboard-line"></i><span>Dashboard</span></button><button class="nav-btn" onclick="showSection('forms')"><i class="ri-survey-line"></i><span>Forms</span></button><button class="nav-btn" onclick="showSection('teams')"><i class="ri-group-line"></i><span>Teams</span></button><button class="nav-btn" onclick="showSection('payments')"><i class="ri-wallet-3-line"></i><span>Payment Fallback</span></button><button class="nav-btn logout" onclick="handleLogout()"><i class="ri-logout-box-line"></i><span>Logout</span></button></nav>
     </aside>
     <main class="app-content">
       <div class="topbar"><div><h1>Tournament Admin</h1><p>Create event, approve payment, manage bracket, dan update leaderboard.</p></div></div>
@@ -24,10 +24,36 @@
           <form id="create-tournament-form" class="form-grid">
             <input id="tourName" placeholder="Tournament Name" required>
             <div class="form-row"><select id="tourMode"><option value="team">Team 5v5</option><option value="brawl">1 vs 1 Brawl</option></select><select id="tourFormat"><option value="1">BO1</option><option value="3">BO3</option><option value="5">BO5</option></select></div>
-            <div class="form-row"><input id="tourMax" type="number" min="2" placeholder="Max Slots" required><input id="tourPlayerPerTeam" type="number" min="1" max="10" value="5" placeholder="Player per Team"></div>
+            <div class="form-row"><input id="tourMax" type="number" min="2" placeholder="Max Slots" required><input id="tourPlayerPerTeam" type="number" min="5" max="10" value="5" placeholder="Max Player per Team"></div>
             <input id="tourDate" type="date" required>
             <div class="form-row"><input id="tourFee" type="number" min="0" placeholder="Fee 0 = Free" required><input id="tourPrize" type="number" min="0" placeholder="Total Prize Pool" required></div>
             <textarea id="tourRules" rows="5" placeholder="Tournament rules..." required></textarea>
+            <div class="form-field-builder payment-admin-form">
+              <div class="section-title"><i class="ri-wallet-3-line"></i> Payment Methods Khusus Tournament Ini</div>
+              <small class="muted-text">Metode di sini hanya berlaku untuk tournament yang sedang dibuat. Tournament lain bisa punya Saweria/Trakteer/GoPay/Bank yang berbeda.</small>
+              <input type="hidden" id="tourPaymentEditIndex">
+              <input id="tourPaymentName" placeholder="Nama metode, contoh: Saweria / Trakteer / GoPay / BCA">
+              <div class="form-row">
+                <select id="tourPaymentType">
+                  <option value="link">Link pembayaran / donasi</option>
+                  <option value="wallet">E-Wallet / Transfer nomor</option>
+                  <option value="bank">Bank Transfer</option>
+                  <option value="custom">Custom instruction</option>
+                </select>
+                <select id="tourPaymentStatus">
+                  <option value="active">Available / Aktif</option>
+                  <option value="inactive">Hidden / Nonaktif</option>
+                </select>
+              </div>
+              <input id="tourPaymentTarget" placeholder="Link / nomor / rekening khusus tournament ini">
+              <input id="tourPaymentOwner" placeholder="Atas nama / username / pemilik rekening (optional)">
+              <textarea id="tourPaymentNote" rows="3" placeholder="Instruksi tambahan khusus tournament ini"></textarea>
+              <div class="row-actions">
+                <button class="btn ghost" type="button" onclick="addTournamentPaymentMethod()"><i class="ri-add-line"></i> Add / Update Method</button>
+                <button class="btn ghost" type="button" onclick="resetTournamentPaymentForm()">Reset Method Form</button>
+              </div>
+              <div id="tourPaymentMethodsList" class="roster-list"><div class="empty-state">Belum ada metode.</div></div>
+            </div>
             <button class="btn" type="submit">Create Tournament</button>
           </form>
         </div>
@@ -41,12 +67,17 @@
             <input id="formTitle" placeholder="Judul form, contoh: Recruitment Player" required>
             <textarea id="formDescription" rows="3" placeholder="Deskripsi form / instruksi pengisian"></textarea>
             <div class="form-row">
-              <select id="formStatus"><option value="open">Open</option><option value="closed">Closed</option></select>
-              <select id="formTarget"><option value="all">Semua akun</option><option value="team">Team only</option><option value="user">Solo/User only</option></select>
+              <select id="formStatus"><option value="open">Accepting responses</option><option value="closed">Closed</option></select>
+              <select id="formTheme"><option value="purple">Purple theme</option><option value="blue">Blue theme</option><option value="green">Green theme</option><option value="dark">Dark theme</option></select>
+            </div>
+            <div class="form-row">
+              <label class="switch-row"><input id="formCollectEmail" type="checkbox"> <span>Collect email</span></label>
+              <label class="switch-row"><input id="formLimitOne" type="checkbox"> <span>Limit 1 response per browser</span></label>
             </div>
             <div class="form-field-builder">
               <div class="section-title"><i class="ri-input-field"></i> Tambah Pertanyaan</div>
-              <input id="fieldLabel" placeholder="Pertanyaan, contoh: Nama lengkap player">
+              <input id="fieldLabel" placeholder="Question, contoh: Nama lengkap">
+              <input id="fieldDescription" placeholder="Description/helper text (optional)">
               <div class="form-row">
                 <select id="fieldType">
                   <option value="text">Short Text</option>
@@ -63,6 +94,7 @@
               </div>
               <textarea id="fieldOptions" rows="4" placeholder="Tulis opsi satu per baris / pisahkan koma" disabled></textarea>
               <button class="btn ghost" type="button" onclick="addFormField()"><i class="ri-add-line"></i> Add Question</button>
+              <small class="muted-text">Form ini untuk umum. Tidak ada validasi akun, team, atau tournament.</small>
             </div>
             <div id="form-fields-preview" class="builder-preview"><div class="empty-state">Belum ada pertanyaan.</div></div>
             <button class="btn success" type="submit"><i class="ri-save-3-line"></i> Save Form</button>
@@ -74,6 +106,38 @@
         </div>
       </section>
       <section id="admin-teams-section" class="card hidden"><div class="section-title"><i class="ri-shield-star-line"></i> Team Manager</div><div id="team-stats-list" class="teams-grid"></div></section>
+
+      <section id="admin-payments-section" class="dashboard-grid hidden">
+        <div class="card">
+          <div class="section-title"><i class="ri-wallet-3-line"></i> Payment Fallback / Template</div>
+          <form id="payment-method-form" class="form-grid payment-admin-form">
+            <input type="hidden" id="paymentEditId">
+            <input id="paymentName" placeholder="Nama metode, contoh: Saweria / GoPay / DANA" required>
+            <div class="form-row">
+              <select id="paymentType">
+                <option value="link">Link pembayaran / donasi</option>
+                <option value="wallet">E-Wallet / Transfer nomor</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="custom">Custom instruction</option>
+              </select>
+              <select id="paymentStatus">
+                <option value="active">Available / Aktif</option>
+                <option value="inactive">Hidden / Nonaktif</option>
+              </select>
+            </div>
+            <input id="paymentTarget" placeholder="Link / nomor / rekening. Contoh: https://trakteer.id/... atau 0812..." required>
+            <input id="paymentOwner" placeholder="Atas nama / username / pemilik rekening (optional)">
+            <textarea id="paymentNote" rows="3" placeholder="Instruksi tambahan, contoh: kirim bukti ke Discord room #payment-proof"></textarea>
+            <button class="btn success" type="submit"><i class="ri-save-3-line"></i> Save Payment Method</button>
+            <button class="btn ghost" type="button" onclick="resetPaymentForm()">Reset Form</button>
+          </form>
+          <small class="muted-text">Ini hanya fallback/template untuk data tournament lama. Untuk tournament baru, set metode payment langsung di form Create Tournament agar tiap tournament bisa beda.</small>
+        </div>
+        <div class="card">
+          <div class="section-title"><i class="ri-list-check-3"></i> Available Methods</div>
+          <div id="payment-method-list" class="roster-list"><div class="empty-state">Loading payment methods...</div></div>
+        </div>
+      </section>
       <section id="tournament-control-section" class="card hidden">
         <button class="btn ghost small" onclick="showSection('dashboard')"><i class="ri-arrow-left-line"></i> Back</button>
         <div class="bracket-heading"><div><h2 id="control-title">Control</h2><span id="format-display"></span><p id="fee-display"></p></div></div>

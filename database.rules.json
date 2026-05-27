@@ -32,19 +32,26 @@
         }
       }
     },
-    "forms": {
+    "publicForms": {
       ".read": true,
       "$formId": {
         ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
       }
     },
-    "formResponses": {
+    "publicFormResponses": {
       "$formId": {
         ".read": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'",
         "$responseId": {
           ".write": true
         }
       }
+    },
+    "paymentMethods": {
+      ".read": "auth != null",
+      "$methodId": {
+        ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
+      },
+      ".write": "auth != null && auth.uid === 'KMvEgDWkxfYVGjpNbqHijeHAPTz2'"
     }
   }
 }
